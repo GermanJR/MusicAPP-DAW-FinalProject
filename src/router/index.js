@@ -5,6 +5,7 @@ import SpotifyCallback from "@/views/SpotifyCallback.vue";
 import ForbiddenPage from "@/views/ForbiddenPage.vue";
 import NotFoundPage from "@/views/NotFoundPage.vue";
 import ProfilePage from "@/views/ProfilePage.vue";
+import ShowCategoriesPage from "@/views/ShowCategoriesPage.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -29,6 +30,12 @@ const router = createRouter({
       path: '/profile',
       name: 'profile',
       component: ProfilePage,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/categories',
+      name: 'categories',
+      component: ShowCategoriesPage,
       meta: { requiresAuth: true }
     },
     {

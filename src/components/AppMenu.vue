@@ -18,6 +18,7 @@ export default defineComponent({
   <nav v-if="user.display_name">
     <ul>
       <router-link to="/dashboard">Dashboard</router-link>
+      <router-link to="/categories">Categories</router-link>
       <router-link to="/profile">My account</router-link>
     </ul>
   </nav>
