@@ -3,6 +3,7 @@ import {defineComponent} from 'vue'
 import {getTokenWithAuthorizationCode} from "@/functions/tokenService";
 import {REDIRECT_URI} from "@/utils/const_utils";
 import {userStore} from "@/stores/userStore";
+import {categoriesStore} from "@/stores/categoriesStore.js";
 
 export default defineComponent({
   name: "SpotifyCallback",
@@ -20,6 +21,9 @@ export default defineComponent({
             .then((accessToken) => {
               const myUserStore = userStore()
               myUserStore.populateUser(accessToken);
+
+              const myCategoriesStore = categoriesStore()
+              myCategoriesStore.populateCategories()
               this.$router.push('/dashboard')
             })
             .catch((error) => {
