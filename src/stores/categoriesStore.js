@@ -23,7 +23,6 @@ export const categoriesStore = defineStore("categoriesStore", {
         async getNewCategories(url) {
             if (localStorage.getItem("access_token")) {
                 this.categories = await getPaginatedCategories(localStorage.getItem("access_token"), url);
-                console.log(this.categories)
             } else {
                 throw new Error("Error in categories! Token is not set.");
             }

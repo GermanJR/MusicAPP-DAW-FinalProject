@@ -1,14 +1,14 @@
 <template>
   <h2>Categories</h2>
   <div class="container">
-    <div class="row">
-      <category-card v-for="category in categories.items" :key="category.id" :category-recieved="category"></category-card>
+    <div class="row text-center justify-content-center">
+      <category-card v-for="category in categories.items" :key="category.id" :category-received="category"></category-card>
     </div>
   </div>
   <div class="container">
-    <div class="row">
-      <button v-if="this.categories.next" type="button" class="col-12 col-sm-3 text-end" @click="reloadNewCategories(this.categories.next)">Next</button>
-      <button v-if="this.categories.previous" type="button" class="col-12 col-sm-3 text-start" @click="reloadNewCategories(this.categories.previous)">Previous</button>
+    <div class="row text-center">
+      <button v-if="this.categories.previous" type="button" class="col-12 col-sm-3 text-center mx-auto" @click="reloadNewCategories(this.categories.previous)">Previous</button>
+      <button v-if="this.categories.next" type="button" class="col-12 col-sm-3 text-center mx-auto" @click="reloadNewCategories(this.categories.next)">Next</button>
     </div>
   </div>
   <div style="margin-bottom: 100px"></div>
@@ -64,5 +64,15 @@ export default {
 
 
 <style scoped>
-
+button {
+  height: 40px;
+  width: 200px;
+  background-color: #1ED760;
+  border: solid 2px #000;
+  border-radius: 20px;
+  color: #000;
+  font-weight: bold;
+  padding-top: 2px;
+  margin-top: 25px;
+}
 </style>

@@ -1,6 +1,6 @@
 export async function getAllCategories(token) {
     const result = await fetch(
-        `https://api.spotify.com/v1/browse/categories`,
+        `https://api.spotify.com/v1/browse/categories?limit=21&locale=en_EN`,
         {
             method: "GET",
             headers: { Authorization: "Bearer " + token },
