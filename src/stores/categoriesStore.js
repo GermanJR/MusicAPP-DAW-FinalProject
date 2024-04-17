@@ -15,7 +15,6 @@ export const categoriesStore = defineStore("categoriesStore", {
         async populateCategories() {
             if (localStorage.getItem("access_token")) {
                 this.categories = await getAllCategories(localStorage.getItem("access_token"));
-                console.log(this.categories)
             } else {
                 throw new Error("Error in categories! Token is not set.");
             }

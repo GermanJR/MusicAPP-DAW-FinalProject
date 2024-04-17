@@ -2,21 +2,32 @@
 import { RouterView } from 'vue-router'
 import FooterApp from "@/components/FooterApp.vue";
 import AppMenu from "@/components/AppMenu.vue";
-//import ShowCategory from "./components/ShowCategory.vue";
-//import HomePage from "@/views/HomePage.vue";
+import MessageComponent from "@/components/MessageComponent.vue";
+import {messageStore} from "@/stores/messagesStore.js";
+import {computed} from "vue";
 
 export default {
   name: "App",
+
   components: {
     RouterView,
     FooterApp,
     AppMenu,
+    MessageComponent,
+  },
+
+  setup() {
+    const myMessageStore = messageStore();
+    return {
+      messages: computed(() => myMessageStore.messages)
+    }
   },
 };
 </script>
 
 <template>
   <app-menu></app-menu>
+  <message-component v-for="message in messages" :key="message.id" :message="message" />
   <router-view></router-view>
   <footer-app></footer-app>
 </template>

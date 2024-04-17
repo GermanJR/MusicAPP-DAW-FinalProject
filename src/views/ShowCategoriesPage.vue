@@ -17,6 +17,7 @@
 <script>
 import CategoryCard from "@/components/CategoryCard.vue";
 import {categoriesStore} from "@/stores/categoriesStore.js";
+import {messageStore} from "@/stores/messagesStore.js";
 
 export default {
   components: {
@@ -25,23 +26,42 @@ export default {
 
   data() {
     return {
-      categories: [],
+      categories: {},
     }
   },
 
   mounted() {
-    const myCategoriesStore = categoriesStore()
-    this.categories = myCategoriesStore.allCategories;
+    this.reloadCategories();
   },
 
   methods: {
+    async reloadCategories() {
+      const myCategoriesStore = categoriesStore();
+      try {
+        await myCategoriesStore.populateCategories();
+        this.categories = {...myCategoriesStore.allCategories};
+      } catch (error) {
+        const messages = messageStore()
+        messages.addMessage("danger", "Error loading categories: " + error)
+        console.error(error);
+      }
+    },
+
     async reloadNewCategories(url) {
-      const myCategoriesStore = categoriesStore()
-      this.categories = myCategoriesStore.getNewCategories(url)
+      const myCategoriesStore = categoriesStore();
+      try {
+        await myCategoriesStore.getNewCategories(url);
+        this.categories = {...myCategoriesStore.allCategories};
+      } catch (error) {
+        const messages = messageStore()
+        messages.addMessage("danger", "Error reloading categories: " + error)
+        console.error(error);
+      }
     },
   }
 };
 </script>
+
 
 <style scoped>
 
