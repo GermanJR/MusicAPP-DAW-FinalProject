@@ -37,8 +37,7 @@ export default defineComponent({
               throw new Error("Error getting the authentication code: " + error);
             });
       } else {
-        messages.addMessage("danger", "An error occurred trying to login: code not found.")
-        console.error("Code was not found on URI.");
+        messages.addMessage("danger", "An error occurred trying to login: code not found or authorization denied by user.")
         this.$router.push("/");
       }
     }

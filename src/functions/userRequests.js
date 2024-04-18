@@ -10,4 +10,3 @@ export async function getProfile(accessToken) {
   }
   return await response.json();
 }
-
