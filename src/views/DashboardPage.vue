@@ -3,6 +3,7 @@ import {defineComponent} from 'vue';
 import {userStore} from "@/stores/userStore";
 import {mapState} from "pinia";
 import {getUserTopItems} from "@/functions/mostUsedRequests.js";
+import SongCard from "@/components/SongCard.vue";
 
 export default defineComponent({
   name: "DashboardPage",
@@ -21,13 +22,18 @@ export default defineComponent({
     }
   },
 
+  components: {
+    SongCard,
+  },
+
   methods: {
     toggleRecommendedSongs(){
       this.showTopSongs = !this.showTopSongs;
     },
 
     async handleRecommendedItemsCall(type){
-      this.topSongs = await getUserTopItems(localStorage.getItem("access_token"), type, this.periodSelectValue, this.sliderItemValue)
+      const topSongsResponse = await getUserTopItems(localStorage.getItem("access_token"), type, this.periodSelectValue, this.sliderItemValue)
+      this.topSongs = topSongsResponse.items
     }
   }
 });
@@ -48,17 +54,24 @@ export default defineComponent({
         <input type="range" min="1" max="10" v-model="sliderItemValue" class="slider col-11 col-sm-5" id="songsRange" ><span class="col-1">{{ sliderItemValue }}</span>
 
         <label for="period" class="col-12 col-sm-6">Period of time:</label>
-        <select name="period" id="period" class="col-12 col-sm-6" v-model="periodSelectValue">
+        <select name="period" id="period" class="col-12 col-sm-6 mb-4" v-model="periodSelectValue">
           <option value="short_term">Short</option>
           <option value="medium_term">Medium</option>
           <option value="long_term">Long</option>
         </select>
 
-        <button v-if="showTopSongs" type="button" @click="handleRecommendedItemsCall('tracks')" id="openButton" class="col-12">Search</button>
+        <div id="songContainer" class="container">
+          <div class="row">
+            <song-card v-for="song in topSongs" :key="song.id" :song-received="song"></song-card>
+          </div>
+        </div>
+
+        <button v-if="showTopSongs" type="button" @click="handleRecommendedItemsCall('tracks')" id="openButton" class="col-12 me-3">Search</button>
         <button v-if="showTopSongs" type="button" @click="toggleRecommendedSongs" id="closeButton" class="col-12">Close</button>
       </div>
     </div>
   </div>
+  <div style="margin-bottom: 100px"></div>
 </template>
 
 <style scoped>
