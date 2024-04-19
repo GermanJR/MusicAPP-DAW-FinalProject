@@ -18,7 +18,7 @@ export default {
     },
 
     openSongInPlayer() {
-      // Implementation for playing the song
+      this.$router.push({ name: 'player', params: { id: this.songReceived.id } })
     },
 
     getDurationFormatted(milliseconds) {

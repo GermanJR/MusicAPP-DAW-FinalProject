@@ -6,6 +6,7 @@ import ForbiddenPage from "@/views/ForbiddenPage.vue";
 import NotFoundPage from "@/views/NotFoundPage.vue";
 import ProfilePage from "@/views/ProfilePage.vue";
 import ShowCategoriesPage from "@/views/ShowCategoriesPage.vue";
+import SongPlayerPage from "@/views/SongPlayerPage.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -36,6 +37,12 @@ const router = createRouter({
       path: '/categories',
       name: 'categories',
       component: ShowCategoriesPage,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/player/:id',
+      name: 'player',
+      component: SongPlayerPage,
       meta: { requiresAuth: true }
     },
     {
