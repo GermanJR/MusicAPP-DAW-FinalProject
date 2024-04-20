@@ -25,6 +25,7 @@ export async function changeSongPlaybackState(accessToken, songUri, playerId) {
     if (!response.ok) {
         throw new Error("Error while changing playback state: ")
     }
-    return await response.json();
+    console.log("OK! Changed song")
+    return true;
 }
 
