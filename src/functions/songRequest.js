@@ -11,19 +11,17 @@ export async function getSongById(accessToken, id) {
     return await response.json();
 }
 
-export async function changeSongPlaybackState(accessToken, contextUri) {
-    console.log(contextUri)
-    const response = await fetch('https://api.spotify.com/v1/me/player/play', {
+export async function changeSongPlaybackState(accessToken, songUri, playerId) {
+    const response = await fetch(`https://api.spotify.com/v1/me/player/play?device_id=${playerId}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
             Authorization: 'Bearer ' + accessToken
         },
         body: JSON.stringify({
-            "context_uri": `${contextUri}`,
+            "uris": [`${songUri}`],
         })
     });
-    console.log(await response.json())
     if (!response.ok) {
         throw new Error("Error while changing playback state: ")
     }

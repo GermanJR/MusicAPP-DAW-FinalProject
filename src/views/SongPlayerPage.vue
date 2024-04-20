@@ -42,7 +42,7 @@ export default {
 
     playSong() {
       if (this.player) {
-        changeSongPlaybackState(localStorage.getItem("access_token"), this.currentSong.uri)
+        changeSongPlaybackState(localStorage.getItem("access_token"), this.currentSong.uri, localStorage.getItem("player_id"))
         this.player.togglePlay()
         this.player.resume()
         this.playing = true;

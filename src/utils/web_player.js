@@ -14,6 +14,7 @@ window.onSpotifyWebPlaybackSDKReady = () => {
 
     player.addListener('ready', ({ device_id }) => {
         messages.addMessage("success", "The player is ready.")
+        localStorage.setItem("player_id", device_id)
         console.log('Ready with Device ID', device_id);
     });
 
