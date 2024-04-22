@@ -28,6 +28,18 @@ export default {
       minutes = minutes.toString().padStart(2, '0');
       seconds = seconds.toString().padStart(2, '0');
       return minutes + ":" + seconds;
+    },
+
+    getImage() {
+      try {
+        if (this.songReceived) {
+          return this.songReceived.album.images[1].url
+        }
+
+      } catch (error) {
+        console.warn("Empty song")
+      }
+      return ""
     }
   }
 }
@@ -38,6 +50,7 @@ export default {
     <div class="song-info">
       <h4><b>{{ songReceived.name }}</b></h4>
       <h6>Duration: {{ getDurationFormatted(songReceived.duration_ms) }}</h6>
+      <img :src="getImage()" alt="Album photo" style="height: 50px; width: 50px;">
       <h5>{{ getArtists() }}</h5>
     </div>
     <div class="song-actions">
