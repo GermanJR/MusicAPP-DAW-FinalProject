@@ -1,45 +1,37 @@
 <script>
 export default {
-  name: "SongCard",
+  name: "ArtistCard",
+
   props: {
-    songReceived: {
+    artistRecieved: {
       type: Object,
       required: true,
     }
   },
 
   methods: {
-    getArtists() {
-      return this.songReceived.artists.map(artist => artist.name).join(", ");
-    },
-
-    handleSpotifyRedirection() {
-      window.open(this.songReceived.external_urls.spotify, "_blank");
-    },
-
-    openSongInPlayer() {
-      this.$router.push({ name: 'player', params: { id: this.songReceived.id } })
-    },
-
-    getDurationFormatted(milliseconds) {
-      let seconds = Math.floor(milliseconds / 1000);
-      let minutes = Math.floor(seconds / 60);
-      seconds = seconds % 60;
-      minutes = minutes.toString().padStart(2, '0');
-      seconds = seconds.toString().padStart(2, '0');
-      return minutes + ":" + seconds;
-    },
-
     getImage() {
       try {
-        if (this.songReceived) {
-          return this.songReceived.album.images[1].url
+        if (this.artistRecieved) {
+          return this.artistRecieved.images[1].url
         }
 
       } catch (error) {
-        console.warn("Empty song")
+        console.warn("Empty artist")
       }
       return ""
+    },
+
+    handleSpotifyRedirection() {
+      window.open(this.artistRecieved.external_urls.spotify, "_blank");
+    },
+
+    handleOpenArtist() {
+      this.$router.push()
+    },
+
+    getGenres() {
+      return this.artistRecieved.genres.join(", ");
     }
   }
 }
@@ -48,13 +40,12 @@ export default {
 <template>
   <div class="song-card">
     <div class="song-info">
-      <h4><b>{{ songReceived.name }}</b></h4>
-      <h6>Duration: {{ getDurationFormatted(songReceived.duration_ms) }}</h6>
-      <img :src="getImage()" alt="Album photo" style="height: 75px; width: 75px;" class="img-thumbnail">
-      <h5>{{ getArtists() }}</h5>
+      <h4><b>{{ artistRecieved.name }}</b></h4>
+      <img :src="getImage()" alt="Artist photo" style="height: 75px; width: 75px;" class="img-thumbnail">
+      <h5>Genres: {{ getGenres() }}</h5>
     </div>
     <div class="song-actions">
-      <button type="button" class="listen-button" @click="openSongInPlayer">Play song</button>
+      <button type="button" class="listen-button" @click="handleOpenArtist">View artist</button>
       <button type="button" class="spotify-button" @click="handleSpotifyRedirection">
         <img class="spotify-icon" src="/buttonIcon.png" alt="Spotify Icon">
         Open on Spotify

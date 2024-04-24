@@ -111,7 +111,7 @@ export default {
                     <div style="background-color: #ffff5e; padding-top: 10px; color: #181818; border-radius: 20px; border: solid 5px #cbcb00; margin-bottom: 20px;">
                         <h3>Song popularity:</h3>
                         <h4><strong>(${popularity})</strong></h4>
-                        <h5>Average</h5>
+                        <h5>Ok</h5>
                     </div>
             `;
           case popularity >= 50 && popularity < 70:
@@ -155,7 +155,8 @@ export default {
   <div v-if="isSongIdSet" class="container pt-3" id="main_container">
     <div class="row text-center d-flex flex-column align-content-center align-items-center">
       <h2>{{ currentSong.name }}</h2>
-      <img :src="getImage()" alt="Album photo" style="height: 300px; width: 300px;">
+      <div class="px-4" id="photo_container"><img :src="getImage()" alt="Album photo" class="img-fluid"></div>
+
       <h6>{{ getDurationFormatted(currentSong.duration_ms) }}</h6>
       <h5>{{ getArtists() }}</h5>
 
@@ -200,5 +201,15 @@ export default {
   display: flex !important;
   flex-direction: column !important;
   align-items: center !important;
+}
+
+#photo_container {
+  height: 300px;
+  width: 300px;
+}
+
+#photo_container img {
+  border-radius: 3px;
+  border: solid 3px #f2f2f2;
 }
 </style>
