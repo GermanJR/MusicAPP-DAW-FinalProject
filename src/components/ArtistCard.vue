@@ -27,7 +27,7 @@ export default {
     },
 
     handleOpenArtist() {
-      this.$router.push()
+      this.$router.push({ name: 'artist', params: { id: this.artistRecieved.id } })
     },
 
     getGenres() {

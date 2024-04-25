@@ -7,6 +7,7 @@ import NotFoundPage from "@/views/NotFoundPage.vue";
 import ProfilePage from "@/views/ProfilePage.vue";
 import ShowCategoriesPage from "@/views/ShowCategoriesPage.vue";
 import SongPlayerPage from "@/views/SongPlayerPage.vue";
+import ShowArtistPage from "@/views/ShowArtistPage.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -43,6 +44,12 @@ const router = createRouter({
       path: '/player/:id',
       name: 'player',
       component: SongPlayerPage,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/artist/:id',
+      name: 'artist',
+      component: ShowArtistPage,
       meta: { requiresAuth: true }
     },
     {
