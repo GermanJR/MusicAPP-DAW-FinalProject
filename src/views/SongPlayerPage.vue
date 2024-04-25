@@ -168,6 +168,7 @@ export default {
       <div v-html="getPopularity()"></div>
     </div>
   </div>
+  <div style="height: 150px"></div>
 </template>
 
 <style scoped>

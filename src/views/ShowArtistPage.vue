@@ -1,6 +1,7 @@
 <script>
 import {messageStore} from "@/stores/messagesStore.js";
 import {getArtistById, getTopArtistSongsById} from "@/functions/artistRequests.js";
+import SongCard from "@/components/SongCard.vue";
 
 export default {
   name: "ShowArtistPage",
@@ -9,6 +10,10 @@ export default {
     isArtistIdSet() {
       return !!this.$route.params.id
     },
+  },
+
+  components: {
+    SongCard,
   },
 
   data() {
@@ -23,7 +28,8 @@ export default {
 
     if (this.isArtistIdSet) {
       this.artist = await getArtistById(localStorage.getItem("access_token"), this.$route.params.id)
-      this.topArtistSongs = await getTopArtistSongsById(localStorage.getItem("access_token"), this.$route.params.id)
+      const topArtistSongResponse = await getTopArtistSongsById(localStorage.getItem("access_token"), this.$route.params.id)
+      this.topArtistSongs = topArtistSongResponse.tracks.slice(0, 3)
     } else {
       messages.addMessage("danger", "Error! Artist ID not found.")
     }
@@ -48,7 +54,7 @@ export default {
         switch (true) {
           case popularity < 10:
             return `
-                    <div style="background-color: crimson; padding-top: 10px; color: #181818; border-radius: 20px; border: solid 5px #790009; margin-bottom: 20px;">
+                    <div class="px-3" style="background-color: crimson; padding-top: 10px; color: #181818; border-radius: 20px; border: solid 5px #790009; margin-bottom: 20px;">
                         <h3>Artist popularity:</h3>
                         <h4><strong>(${popularity})</strong></h4>
                         <h5>Very low</h5>
@@ -56,7 +62,7 @@ export default {
             `;
           case popularity >= 10 && popularity < 30:
             return `
-                    <div style="background-color: orange; padding-top: 10px; color: #181818; border-radius: 20px; border: solid 5px darkorange; margin-bottom: 20px;">
+                    <div class="px-3" style="background-color: orange; padding-top: 10px; color: #181818; border-radius: 20px; border: solid 5px darkorange; margin-bottom: 20px;">
                         <h3>Artist popularity:</h3>
                         <h4><strong>(${popularity})</strong></h4>
                         <h5>Low</h5>
@@ -64,7 +70,7 @@ export default {
             `;
           case popularity >= 30 && popularity < 50:
             return `
-                    <div style="background-color: #ffff5e; padding-top: 10px; color: #181818; border-radius: 20px; border: solid 5px #cbcb00; margin-bottom: 20px;">
+                    <div class="px-3" style="background-color: #ffff5e; padding-top: 10px; color: #181818; border-radius: 20px; border: solid 5px #cbcb00; margin-bottom: 20px;">
                         <h3>Artist popularity:</h3>
                         <h4><strong>(${popularity})</strong></h4>
                         <h5>Ok</h5>
@@ -72,7 +78,7 @@ export default {
             `;
           case popularity >= 50 && popularity < 70:
             return `
-                    <div style="background-color: #c8ff00; padding-top: 10px; color: #181818; border-radius: 20px; border: solid 5px #a5d200; margin-bottom: 20px;">
+                    <div class="px-3" style="background-color: #c8ff00; padding-top: 10px; color: #181818; border-radius: 20px; border: solid 5px #a5d200; margin-bottom: 20px;">
                         <h3>Artist popularity:</h3>
                         <h4><strong>(${popularity})</strong></h4>
                         <h5>Good</h5>
@@ -80,7 +86,7 @@ export default {
             `;
           case popularity >= 70 && popularity < 90:
             return `
-                    <div style="background-color: #22fd00; padding-top: 10px; color: #181818; border-radius: 20px; border: solid 5px #329400; margin-bottom: 20px;">
+                    <div class="px-3" style="background-color: #22fd00; padding-top: 10px; color: #181818; border-radius: 20px; border: solid 5px #329400; margin-bottom: 20px;">
                         <h3>Artist popularity:</h3>
                         <h4><strong>(${popularity})</strong></h4>
                         <h5>Great</h5>
@@ -88,7 +94,7 @@ export default {
             `;
           case popularity >= 90:
             return `
-                    <div style="background-color: #00fab7; padding-top: 10px; color: #181818; border-radius: 20px; border: solid 5px #00947e; margin-bottom: 20px;">
+                    <div class="px-3" style="background-color: #00fab7; padding-top: 10px; color: #181818; border-radius: 20px; border: solid 5px #00947e; margin-bottom: 20px;">
                         <h3>Artist popularity:</h3>
                         <h4><strong>(${popularity})</strong></h4>
                         <h5>Excellent</h5>
@@ -142,12 +148,19 @@ export default {
 
   </div>
   <div class="row text-center d-flex flex-column align-content-center align-items-center">
-    <p class="col-12">Followers: {{ getFollowers() }}</p>
-    <p class="col-12">Genres: {{ getArtistGenres() }}</p>
+    <h4 class="col-12">Followers: {{ getFollowers() }}</h4>
+    <h4 class="col-12">Genres: {{ getArtistGenres() }}</h4>
   </div>
+
+  <div class="row text-center d-flex flex-column align-content-center align-items-center">
+    <h3 class="col-12">Top 3 {{ artist.name }} songs:</h3>
+    <song-card v-for="song in this.topArtistSongs" :key="song" :song-received="song"></song-card>
+  </div>
+
   <div class="row text-center d-flex flex-column align-content-center align-items-center">
     <div v-html="getPopularity()"></div>
   </div>
+
   <div class="row text-center d-flex flex-column align-content-center align-items-center">
     <button type="button" class="spotify-button d-flex flex-row" @click="handleSpotifyRedirection">
       <img class="spotify-icon" src="/buttonIcon.png" alt="Spotify Icon">
