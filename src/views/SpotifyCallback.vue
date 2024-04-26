@@ -46,7 +46,11 @@ export default defineComponent({
 </script>
 
 <template>
-  <h2>Loading ...</h2>
+  <div class="container">
+    <div class="row">
+      <h2 class="col-12 text-center">Loading ...</h2>
+    </div>
+  </div>
 </template>
 
 <style scoped>

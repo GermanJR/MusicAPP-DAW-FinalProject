@@ -10,6 +10,7 @@ export default {
 
   methods: {
     getArtists() {
+      console.log(this.songReceived)
       return this.songReceived.artists.map(artist => artist.name).join(", ");
     },
 

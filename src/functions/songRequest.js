@@ -29,3 +29,18 @@ export async function changeSongPlaybackState(accessToken, songUri, playerId) {
     return true;
 }
 
+export async function pausePlayback(accessToken, playerId) {
+    const response = await fetch(`https://api.spotify.com/v1/me/player/pause?device_id=${playerId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + accessToken
+        },
+    });
+    if (!response.ok) {
+        throw new Error("Error while changing playback state: ")
+    }
+    console.log("OK! Paused song")
+    return true;
+}
+
