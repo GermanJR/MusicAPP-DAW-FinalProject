@@ -44,3 +44,28 @@ export async function pausePlayback(accessToken, playerId) {
     return true;
 }
 
+export async function saveSongs(accessToken, songs) {
+    const response = await fetch(`https://api.spotify.com/v1/me/tracks?ids=${songs}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + accessToken
+        },
+    });
+    if (!response.ok) {
+        throw new Error("Error saving songs.")
+    }
+    return true;
+}
+
+export async function checkSavedSongs(accessToken, songs) {
+    const response = await fetch(`https://api.spotify.com/v1/me/tracks/contains?ids=${songs}`, {
+        headers: {
+            Authorization: 'Bearer ' + accessToken
+        },
+    });
+    if (!response.ok) {
+        throw new Error("Error checking songs.")
+    }
+    return response.json();
+}

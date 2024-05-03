@@ -8,7 +8,7 @@ export default defineComponent({
     async handleLogin() {
       const client_id = import.meta.env.VITE_CLIENT_ID;
       const redirect_uri = REDIRECT_URI;
-      const scope = 'user-read-private user-read-email user-top-read streaming app-remote-control playlist-read-private user-read-playback-state user-modify-playback-state user-read-currently-playing';
+      const scope = 'user-read-private user-read-email user-top-read streaming app-remote-control playlist-read-private user-read-playback-state user-modify-playback-state user-read-currently-playing user-library-modify user-library-read';
       const state = this.generateRandomString(16);
 
       const params = new URLSearchParams({

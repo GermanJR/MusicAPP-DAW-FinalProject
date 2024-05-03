@@ -2,6 +2,7 @@
 import {getRecommendations} from "@/functions/recommendationRequests.js";
 import {messageStore} from "@/stores/messagesStore.js";
 import SongCard from "@/components/SongCard.vue";
+import {saveSongs} from "@/functions/songRequest.js";
 
 export default {
   name: "RecommendationsPage",
@@ -32,12 +33,26 @@ export default {
       try {
         const recommendationsResponse = await getRecommendations(localStorage.getItem("access_token"), "medium_term", this.sliderSongValue)
         this.recommendedSongs = recommendationsResponse.tracks
-        console.log(this.recommendedSongs)
       }catch (error){
         const messages = messageStore()
         messages.addMessage("danger", "Error while trying to find songs.")
         console.error(error)
       }
+    },
+
+    async saveAllSongs() {
+      const messages = messageStore()
+      if (this.areSongsInArray) {
+        if (await saveSongs(localStorage.getItem("access_token"), this.getAllSongIds())) {
+          messages.addMessage("success", "Success! All songs have been saved.")
+        }
+      } else {
+        messages.addMessage("danger", "There is no songs to save!")
+      }
+    },
+
+    getAllSongIds() {
+      return this.recommendedSongs.map(song => song.id).join(",")
     }
   }
 }
@@ -48,6 +63,7 @@ export default {
   <div class="row">
     <h1 class="col-12">Recommendations</h1>
     <h3 class="col-12 mt-3">Find song recommendations based on your recent interactions on Spotify.</h3>
+    <h3 class="col-12 mt-3">You will be able to save the songs on your Spotify account (liked songs playlist).</h3>
   </div>
   <div class="row">
     <p class="col-12 col-sm-6">Number of songs:</p>
@@ -61,7 +77,11 @@ export default {
   </div>
   <div class="row d-flex justify-content-center">
     <button type="button" @click="handleRecommendedSongsCall" id="openButton"
-            class="col-12 me-3">{{ changeButtonText }}
+            class="col-12 col-sm-6 me-3">{{ changeButtonText }}
+    </button>
+
+    <button v-if="areSongsInArray" type="button" @click="saveAllSongs" id="openButton"
+            class="col-12 col-sm-6 me-3">Save all songs
     </button>
   </div>
 </div>

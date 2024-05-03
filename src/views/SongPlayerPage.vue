@@ -1,6 +1,6 @@
 <script>
 import {messageStore} from "@/stores/messagesStore.js";
-import {changeSongPlaybackState, getSongById} from "@/functions/songRequest.js";
+import {changeSongPlaybackState, checkSavedSongs, getSongById, saveSongs} from "@/functions/songRequest.js";
 import getPlayer from "@/utils/web_player.js";
 
 export default {
@@ -19,6 +19,7 @@ export default {
       currentSong: {},
       player: null,
       playing: false,
+      isSongSaved: false,
     }
   },
 
@@ -28,6 +29,8 @@ export default {
     if (this.isSongIdSet) {
       this.currentSong = await getSongById(localStorage.getItem("access_token"), this.$route.params.id)
       this.player = getPlayer()
+      const response = await checkSavedSongs(localStorage.getItem("access_token"), this.currentSong.id)
+      this.isSongSaved = response[0]
     } else {
       messages.addMessage("danger", "Error! Song ID not found on player.")
     }
@@ -143,6 +146,15 @@ export default {
             return "Popularity: Not rated";
         }
       }
+    },
+
+    saveSongOnSpotify() {
+      const messages = messageStore()
+      if (saveSongs(localStorage.getItem("access_token"), this.currentSong.id)) {
+        messages.addMessage("success", "Song saved successfully.")
+      } else {
+        messages.addMessage("danger", "Error saving song.")
+      }
     }
   },
 }
@@ -166,6 +178,10 @@ export default {
       </button>
 
       <div v-html="getPopularity()"></div>
+
+      <button v-if="!isSongSaved" type="button" @click="saveSongOnSpotify" id="openButton"
+              class="col-12 col-sm-6 my-3">Save on Spotify
+      </button>
     </div>
   </div>
   <div style="height: 150px"></div>
@@ -212,5 +228,17 @@ export default {
 #photo_container img {
   border-radius: 3px;
   border: solid 3px #f2f2f2;
+}
+
+#openButton {
+  height: 40px;
+  width: 200px;
+  background-color: #1ED760;
+  border: solid 2px #00752a;
+  border-radius: 20px;
+  color: #000;
+  font-weight: bold;
+  padding-top: 2px;
+  margin-top: 25px;
 }
 </style>
