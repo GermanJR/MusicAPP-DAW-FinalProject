@@ -12,6 +12,10 @@ export default {
     isSongIdSet() {
       return !!this.$route.params.id
     },
+
+    getButtonText() {
+      return this.clicked ? "Saved!" : "Save on Spotify"
+    },
   },
 
   data() {
@@ -20,6 +24,7 @@ export default {
       player: null,
       playing: false,
       isSongSaved: false,
+      clicked: false,
     }
   },
 
@@ -148,10 +153,11 @@ export default {
       }
     },
 
-    saveSongOnSpotify() {
+    async saveSongOnSpotify() {
       const messages = messageStore()
-      if (saveSongs(localStorage.getItem("access_token"), this.currentSong.id)) {
+      if (await saveSongs(localStorage.getItem("access_token"), this.currentSong.id)) {
         messages.addMessage("success", "Song saved successfully.")
+        this.clicked = true
       } else {
         messages.addMessage("danger", "Error saving song.")
       }
@@ -179,8 +185,8 @@ export default {
 
       <div v-html="getPopularity()"></div>
 
-      <button v-if="!isSongSaved" type="button" @click="saveSongOnSpotify" id="openButton"
-              class="col-12 col-sm-6 my-3">Save on Spotify
+      <button v-if="!isSongSaved" :disabled="clicked" type="button" @click="saveSongOnSpotify" id="openButton"
+              class="col-12 col-sm-6 my-3">{{ getButtonText }}
       </button>
     </div>
   </div>
@@ -235,6 +241,19 @@ export default {
   width: 200px;
   background-color: #1ED760;
   border: solid 2px #00752a;
+  border-radius: 20px;
+  color: #000;
+  font-weight: bold;
+  padding-top: 2px;
+  margin-top: 25px;
+}
+
+button:disabled,
+button[disabled]{
+  height: 40px;
+  width: 200px;
+  background-color: rgba(30, 215, 96, 0.78) !important;
+  border: solid 2px rgba(0, 117, 42, 0.96) !important;
   border-radius: 20px;
   color: #000;
   font-weight: bold;
