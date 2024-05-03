@@ -47,7 +47,8 @@ export default defineComponent({
 
 <template>
   <div class="container">
-    <div class="row">
+    <div class="row text-center">
+      <img src="/musicapp_logo.png" alt="MusicAPP logo" class="col-12">
       <h2 class="col-12 text-center">Loading ...</h2>
     </div>
   </div>
@@ -55,6 +56,11 @@ export default defineComponent({
 
 <style scoped>
 h2 {
-  color: #1ED760;
+  color: #1DB954;
+}
+
+img {
+  height: 300px;
+  width: auto;
 }
 </style>

@@ -30,7 +30,7 @@ export default {
   methods: {
     async handleRecommendedSongsCall () {
       try {
-        const recommendationsResponse = await getRecommendations(localStorage.getItem("access_token"), "short_term", this.sliderSongValue)
+        const recommendationsResponse = await getRecommendations(localStorage.getItem("access_token"), "medium_term", this.sliderSongValue)
         this.recommendedSongs = recommendationsResponse.tracks
         console.log(this.recommendedSongs)
       }catch (error){
@@ -47,7 +47,7 @@ export default {
 <div class="container text-center">
   <div class="row">
     <h1 class="col-12">Recommendations</h1>
-    <h3 class="col-12 mt-3">Find songs recommendations based on your recent interactions on Spotify.</h3>
+    <h3 class="col-12 mt-3">Find song recommendations based on your recent interactions on Spotify.</h3>
   </div>
   <div class="row">
     <p class="col-12 col-sm-6">Number of songs:</p>
