@@ -8,7 +8,7 @@ export default defineComponent({
     async handleLogin() {
       const client_id = import.meta.env.VITE_CLIENT_ID;
       const redirect_uri = REDIRECT_URI;
-      const scope = 'user-read-private user-read-email';
+      const scope = 'user-read-private user-read-email user-top-read streaming app-remote-control playlist-read-private user-read-playback-state user-modify-playback-state user-read-currently-playing user-library-modify user-library-read';
       const state = this.generateRandomString(16);
 
       const params = new URLSearchParams({
@@ -38,14 +38,21 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="col-12 text-center">
-    <h1>MusicAPP</h1>
-    <h3 id="description">Login with your Spotify account to have access to features like: get song recommendations, view
-      your top artists, save new songs, delete playlists, and more... </h3>
-    <button id="login_button" type="button" class="text-start" @click="handleLogin">
-      <img id="spotify_icon" src="/buttonIcon.png" alt="Spotify Icon">
-      Login
-    </button>
+  <div class="container">
+    <div class="row justify-content-center">
+      <img alt="MusicAPP logo" src="/musicapp_logo.png" class="logo">
+    </div>
+    <div class="row">
+      <div class="col-12 text-center">
+        <h1>MusicAPP</h1>
+        <h3 id="description">Login with your Spotify account to have access to features like: get song recommendations, view
+          your top artists, save new songs, delete playlists, and more... </h3>
+        <button id="login_button" type="button" class="text-start" @click="handleLogin">
+          <img id="spotify_icon" src="/buttonIcon.png" alt="Spotify Icon">
+          Login
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -69,5 +76,10 @@ export default defineComponent({
 
 #description {
   margin: 30px 0 30px 0;
+}
+
+.logo {
+  height: 300px;
+  width: auto;
 }
 </style>

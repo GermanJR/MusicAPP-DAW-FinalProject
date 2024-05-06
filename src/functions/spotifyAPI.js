@@ -14,19 +14,3 @@ export async function getToken(clientId, clientSecret) {
     localStorage.setItem("access_token", spotifyResponse.access_token);
     return spotifyResponse.access_token;
 }
-
-export async function getCategories(token) {
-    const result = await fetch(
-        `https://api.spotify.com/v1/browse/categories`,
-        {
-            method: "GET",
-            headers: { Authorization: "Bearer " + token },
-        }
-    );
-    if (!result.ok) {
-        throw new Error("Error! Could not get categories.");
-    }
-    const spotifyResponse = await result.json();
-    return spotifyResponse.categories.items;
-}
-
