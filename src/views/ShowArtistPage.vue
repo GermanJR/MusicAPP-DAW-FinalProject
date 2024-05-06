@@ -157,7 +157,7 @@ export default {
     <song-card v-for="song in this.topArtistSongs" :key="song" :song-received="song"></song-card>
   </div>
 
-  <div class="row text-center d-flex flex-column align-content-center align-items-center">
+  <div style="max-width: 300px;" class="row text-center d-flex flex-column align-content-center align-items-center">
     <div v-html="getPopularity()"></div>
   </div>
 

@@ -183,7 +183,7 @@ export default {
         <img v-if="!playing" id="button_icon" src="/play-332-48.png" alt="Play Icon">
       </button>
 
-      <div v-html="getPopularity()"></div>
+      <div style="max-width: 275px;" v-html="getPopularity()"></div>
 
       <button v-if="!isSongSaved" :disabled="clicked" type="button" @click="saveSongOnSpotify" id="openButton"
               class="col-12 col-sm-6 my-3">{{ getButtonText }}

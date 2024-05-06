@@ -70,14 +70,14 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="container">
+  <div class="container text-center d-flex flex-column align-items-center">
     <div class="row">
       <h1 class="col-12">DashBoard</h1>
       <h3 class="col-12">Welcome again <b>{{ user?.display_name }}</b></h3>
     </div>
     <div class="row">
       <h3 class="col-12">Here are some interesting features for you:</h3>
-      <h4 class="col-12">Discover your top more listened songs.</h4>
+      <h4 class="col-12 mt-5">Discover your top more listened songs.</h4>
       <button v-if="!showTopSongs" type="button" @click="toggleRecommendedSongs" id="openButton">Try it!</button>
       <div v-if="showTopSongs" class="row">
         <p class="col-12 col-sm-6">Number of songs:</p>
@@ -164,5 +164,9 @@ b {
   font-weight: bold;
   padding-top: 2px;
   margin-top: 25px;
+}
+
+.row{
+  justify-content: center;
 }
 </style>
