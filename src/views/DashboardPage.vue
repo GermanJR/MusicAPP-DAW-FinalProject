@@ -78,7 +78,7 @@ export default defineComponent({
     </div>
     <div class="row">
       <h3 class="col-12">Here are some interesting features for you:</h3>
-      <h4 class="col-12 mt-5">Discover your top more listened songs.</h4>
+      <h4 class="col-12 mt-5">Discover your top listened songs.</h4>
       <button v-if="!showTopSongs" type="button" @click="toggleRecommendedSongs" id="openButton">Try it!</button>
       <div v-if="showTopSongs" class="row">
         <p class="col-12 col-sm-6">Number of songs:</p>
@@ -170,4 +170,13 @@ b {
 .row{
   justify-content: center;
 }
+
+#period {
+  background-color: #181818;
+  max-height: 40px;
+  height: 40px;
+  color: #f2f2f2;
+}
+
+
 </style>
