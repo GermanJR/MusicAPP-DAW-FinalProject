@@ -62,7 +62,8 @@ export default defineComponent({
         }
       } catch (error) {
         console.error(error)
-        handleError()
+        handleError("token_expired")
+        this.$router.push("/")
       }
     }
   }

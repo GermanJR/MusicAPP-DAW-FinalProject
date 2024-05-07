@@ -6,7 +6,6 @@ export function handleError (type) {
             alert("Your token has expired, please log in again.")
             const messages = messageStore()
             messages.addMessage("danger", "Token expired, log in again.")
-            this.$router.push("/")
             break
         }
         default :

@@ -2,6 +2,7 @@
 import {messageStore} from "@/stores/messagesStore.js";
 import {changeSongPlaybackState, checkSavedSongs, getSongById, saveSongs} from "@/functions/songRequest.js";
 import getPlayer from "@/utils/web_player.js";
+import {userStore} from "@/stores/userStore.js";
 
 export default {
   name: "SongPlayerPage",
@@ -161,6 +162,25 @@ export default {
       } else {
         messages.addMessage("danger", "Error saving song.")
       }
+    },
+
+    getAvailability() {
+      const myUserStore = userStore()
+      const user = myUserStore.getCurrentUser()
+      if (user){
+        const songAvailableCountries = this.currentSong.available_markets
+        if (songAvailableCountries.includes(user.country)) {
+          return `<div style="background-color: rgba(29,185,84,0.6); border: solid 2px #027e30; border-radius: 20px; max-width: 125px;">
+                    <img class="mt-3" src="/correct.png" alt="icon" style="max-width: 50px">
+                    <p>Song available.</p>
+                  </div>`
+        } else {
+          return "b"
+        }
+      } else {
+        console.warn("User not found.")
+        return ""
+      }
     }
   },
 }
@@ -178,7 +198,14 @@ export default {
       <h6>{{ getDurationFormatted(currentSong.duration_ms) }}</h6>
       <h5>{{ getArtists() }}</h5>
 
-      <button type="button" id="play_button" @click="handleSongStatus" class="mb-3">
+      <h5 class="mt-4 mb-2">Availability in your country:</h5>
+
+      <div style="background-color: rgba(187,0,0,0.6); border: solid 2px rgb(187,0,0); border-radius: 20px; max-width: 125px;">
+        <img class="mt-3" src="/incorrect.png" alt="icon" style="max-width: 50px">
+        <p>Song not available.</p>
+      </div>
+
+      <button type="button" id="play_button" @click="handleSongStatus" class="my-3">
         <img v-if="playing" id="button_icon_stop" src="/stopIcon.png" alt="Stop Icon">
         <img v-if="!playing" id="button_icon" src="/play-332-48.png" alt="Play Icon">
       </button>
