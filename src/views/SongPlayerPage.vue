@@ -170,12 +170,15 @@ export default {
       if (user){
         const songAvailableCountries = this.currentSong.available_markets
         if (songAvailableCountries.includes(user.country)) {
-          return `<div style="background-color: rgba(29,185,84,0.6); border: solid 2px #027e30; border-radius: 20px; max-width: 125px;">
+          return `<div class="px-2" style="background-color: rgba(29,185,84,0.6); border: solid 2px #029f3b; border-radius: 20px; max-width: 125px;">
                     <img class="mt-3" src="/correct.png" alt="icon" style="max-width: 50px">
                     <p>Song available.</p>
                   </div>`
         } else {
-          return "b"
+          return `<div style="background-color: rgba(187,0,0,0.6); border: solid 2px rgb(187,0,0); border-radius: 20px; max-width: 125px;">
+                    <img class="mt-3" src="/incorrect.png" alt="icon" style="max-width: 50px">
+                    <p>Song not available.</p>
+                  </div>`
         }
       } else {
         console.warn("User not found.")
@@ -200,10 +203,7 @@ export default {
 
       <h5 class="mt-4 mb-2">Availability in your country:</h5>
 
-      <div style="background-color: rgba(187,0,0,0.6); border: solid 2px rgb(187,0,0); border-radius: 20px; max-width: 125px;">
-        <img class="mt-3" src="/incorrect.png" alt="icon" style="max-width: 50px">
-        <p>Song not available.</p>
-      </div>
+      <div class="d-flex flex-column align-items-center" v-html="getAvailability()"></div>
 
       <button type="button" id="play_button" @click="handleSongStatus" class="my-3">
         <img v-if="playing" id="button_icon_stop" src="/stopIcon.png" alt="Stop Icon">
