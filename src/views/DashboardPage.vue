@@ -6,6 +6,7 @@ import {getUserTopItems} from "@/functions/mostUsedRequests.js";
 import SongCard from "@/components/SongCard.vue";
 import ArtistCard from "@/components/ArtistCard.vue";
 import {messageStore} from "@/stores/messagesStore.js";
+import {handleError} from "@/utils/error_handler.js";
 
 export default defineComponent({
   name: "DashboardPage",
@@ -60,9 +61,8 @@ export default defineComponent({
           messages.addMessage("danger", "Error! Type not supported.")
         }
       } catch (error) {
-        const messages = messageStore()
-        messages.addMessage("danger", "Error! Token not found.")
         console.error(error)
+        handleError()
       }
     }
   }

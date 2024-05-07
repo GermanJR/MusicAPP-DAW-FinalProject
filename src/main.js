@@ -11,6 +11,12 @@ import 'bootstrap/dist/css/bootstrap.css'
 
 const app = createApp(App)
 
+app.config.errorHandler = (error, instance, info) => {
+  console.err("Global error:", error);
+  console.log("Vue instance:", instance);
+  console.log("Error info:", info);
+};
+
 app.use(createPinia())
 app.use(router)
 
