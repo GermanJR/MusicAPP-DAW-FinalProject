@@ -2,6 +2,8 @@
 import {defineComponent} from 'vue'
 import {mapState} from "pinia";
 import {userStore} from "@/stores/userStore";
+import {getUserPlaylists} from "@/functions/playlistRequests.js";
+import PlaylistCard from "@/components/PlaylistCard.vue";
 
 export default defineComponent({
   name: "ProfilePage",
@@ -11,17 +13,27 @@ export default defineComponent({
     }),
   },
 
+  components: {
+    PlaylistCard,
+  },
+
+  async mounted() {
+    const response = await getUserPlaylists(localStorage.getItem("access_token"))
+    this.userPlaylists = response.items
+  },
+
   data() {
     const store = userStore()
     return {
-      profile: store.getProfilePicture()
+      profile: store.getProfilePicture(),
+      userPlaylists: [],
     }
   },
 
   methods: {
     goToSpotifyProfile() {
       window.open(this.user.external_urls.spotify, "_blank")
-    }
+    },
   },
 })
 </script>
@@ -29,7 +41,7 @@ export default defineComponent({
 <template>
   <div class="profile-page">
     <h1>My profile</h1>
-    <div class="profile-container">
+    <div class="profile-container mt-3">
       <div class="profile-header">
         <img :src="profile" alt="Profile picture" class="profile-picture">
         <div class="profile-info">
@@ -43,6 +55,17 @@ export default defineComponent({
         View on Spotify
       </button>
     </div>
+
+    <div class="row text-center mt-4">
+      <h2>My playlists:</h2>
+    </div>
+
+    <div class="container">
+      <div class="row text-center justify-content-center">
+        <playlist-card v-for="playlist in userPlaylists" :key="playlist" :playlist-recieved="playlist"></playlist-card>
+      </div>
+    </div>
+
   </div>
 </template>
 
