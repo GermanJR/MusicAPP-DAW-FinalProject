@@ -1,4 +1,6 @@
 <script>
+import {messageStore} from "@/stores/messagesStore.js";
+
 export default {
   name: "PlaylistCard",
 
@@ -7,12 +9,27 @@ export default {
       type: Object,
       required: true,
     }
+  },
+
+  methods: {
+    handleRedirection() {
+      const messages = messageStore()
+      try {
+        if (this.playlistRecieved.external_urls.spotify) {
+          window.open(this.playlistRecieved.external_urls.spotify, "_blank")
+        } else {
+          messages.addMessage("warning", "Could not open the playlist: url not found.")
+        }
+      }catch (error){
+        console.warn("Url exception caught: " + error)
+      }
+    }
   }
 }
 </script>
 
 <template>
-<div id="main" class="playlist-card col-12 col-sm-4 col-lg-3">
+<div id="main" class="playlist-card col-12 col-sm-4 col-lg-3" @click="handleRedirection">
   <img class="playlist-image" :src="this.playlistRecieved.images[0].url" alt="Playlist image">
   <h4 class="playlist-name">{{ playlistRecieved.name }}</h4>
 </div>
