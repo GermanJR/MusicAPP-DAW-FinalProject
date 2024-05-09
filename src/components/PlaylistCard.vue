@@ -12,7 +12,7 @@ export default {
 </script>
 
 <template>
-<div id="main" class="playlist-card col-12 col-md-4 col-lg-3">
+<div id="main" class="playlist-card col-12 col-sm-4 col-lg-3">
   <img class="playlist-image" :src="this.playlistRecieved.images[0].url" alt="Playlist image">
   <h4 class="playlist-name">{{ playlistRecieved.name }}</h4>
 </div>
@@ -48,7 +48,7 @@ export default {
 }
 
 @media (hover: hover) {
-  .playlist-image:hover {
+  .playlist-card:hover {
     transform: scale(1.05);
   }
 }
@@ -61,12 +61,14 @@ export default {
 @media (max-width: 768px) {
   .playlist-image {
     margin: 16px 8px;
+    border-radius: 5%;
   }
 }
 
 @media (max-width: 576px) {
   .playlist-image {
     padding: 12px;
+    border-radius: 10%;
   }
 
   .playlist-name {

@@ -60,7 +60,7 @@ export default defineComponent({
       <h2>My playlists:</h2>
     </div>
 
-    <div class="container">
+    <div class="container mb-5">
       <div class="row text-center justify-content-center">
         <playlist-card v-for="playlist in userPlaylists" :key="playlist" :playlist-recieved="playlist"></playlist-card>
       </div>
