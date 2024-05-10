@@ -9,6 +9,7 @@ import ShowCategoriesPage from "@/views/ShowCategoriesPage.vue";
 import SongPlayerPage from "@/views/SongPlayerPage.vue";
 import ShowArtistPage from "@/views/ShowArtistPage.vue";
 import RecommendationsPage from "@/views/RecommendationsPage.vue";
+import SongAnalysisPage from "@/views/SongAnalysisPage.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -57,6 +58,12 @@ const router = createRouter({
       path: '/recommendations',
       name: 'recommendations',
       component: RecommendationsPage,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/analysis/:id',
+      name: 'analysis',
+      component: SongAnalysisPage,
       meta: { requiresAuth: true }
     },
     {

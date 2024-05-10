@@ -18,6 +18,7 @@ export default defineComponent({
   },
 
   async mounted() {
+    document.title = "MusicAPP"
     const response = await getUserPlaylists(localStorage.getItem("access_token"))
     this.userPlaylists = response.items
   },

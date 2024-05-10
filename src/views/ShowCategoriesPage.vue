@@ -31,6 +31,7 @@ export default {
   },
 
   mounted() {
+    document.title = "MusicAPP"
     this.reloadCategories();
   },
 

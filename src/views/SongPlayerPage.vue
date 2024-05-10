@@ -17,6 +17,10 @@ export default {
     getButtonText() {
       return this.clicked ? "Saved!" : "Save on Spotify"
     },
+
+    getAvailabilityBlock() {
+      return this.getAvailability()
+    }
   },
 
   data() {
@@ -30,6 +34,7 @@ export default {
   },
 
   async mounted() {
+    document.title = "MusicAPP player"
     const messages = messageStore();
 
     if (this.isSongIdSet) {
@@ -174,16 +179,21 @@ export default {
                     <img class="mt-3" src="/correct.png" alt="icon" style="max-width: 50px">
                     <p>Song available.</p>
                   </div>`
-        } else {
-          return `<div style="background-color: rgba(187,0,0,0.6); border: solid 2px rgb(187,0,0); border-radius: 20px; max-width: 125px;">
+          } else {
+            return `<div style="background-color: rgba(187,0,0,0.6); border: solid 2px rgb(187,0,0); border-radius: 20px; max-width: 125px;">
                     <img class="mt-3" src="/incorrect.png" alt="icon" style="max-width: 50px">
                     <p>Song not available.</p>
                   </div>`
+          }
+        } else {
+          console.warn("User not found.")
+          return ""
         }
-      } else {
-        console.warn("User not found.")
-        return ""
-      }
+    },
+
+    redirectToAnalysis() {
+      const routeData = this.$router.resolve({name: 'analysis', params: {id: this.currentSong.id}});
+      window.open(routeData.href, '_blank');
     }
   },
 }
@@ -203,7 +213,7 @@ export default {
 
       <h5 class="mt-4 mb-2">Availability in your country:</h5>
 
-      <div class="d-flex flex-column align-items-center" v-html="getAvailability()"></div>
+      <div class="d-flex flex-column align-items-center" v-html="getAvailabilityBlock"></div>
 
       <button type="button" id="play_button" @click="handleSongStatus" class="my-3">
         <img v-if="playing" id="button_icon_stop" src="/stopIcon.png" alt="Stop Icon">
@@ -214,6 +224,10 @@ export default {
 
       <button v-if="!isSongSaved" :disabled="clicked" type="button" @click="saveSongOnSpotify" id="openButton"
               class="col-12 col-sm-6 my-3">{{ getButtonText }}
+      </button>
+
+      <button type="button" @click="redirectToAnalysis" id="openButton"
+              class="col-12 col-sm-6 my-3">More details
       </button>
     </div>
   </div>

@@ -69,3 +69,28 @@ export async function checkSavedSongs(accessToken, songs) {
     }
     return response.json();
 }
+
+export async function getSongAudioFeatures(accessToken, id) {
+    const response = await fetch(`https://api.spotify.com/v1/audio-features/${id}`, {
+        headers: {
+            Authorization: 'Bearer ' + accessToken
+        },
+    });
+    if (!response.ok) {
+        throw new Error("Error getting song features, ID: " + id)
+    }
+    return response.json();
+}
+
+export async function getSongAudioAnalysis(accessToken, id) {
+    const response = await fetch(`https://api.spotify.com/v1/audio-analysis/${id}`, {
+        headers: {
+            Authorization: 'Bearer ' + accessToken
+        },
+    });
+    if (!response.ok) {
+        throw new Error("Error getting song analysis, ID: " + id)
+    }
+    return response.json();
+}
+

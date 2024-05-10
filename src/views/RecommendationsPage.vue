@@ -14,6 +14,10 @@ export default {
     }
   },
 
+  mounted() {
+    document.title = "MusicAPP"
+  },
+
   computed: {
     areSongsInArray() {
       return this.recommendedSongs.length !== 0;

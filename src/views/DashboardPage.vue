@@ -34,6 +34,10 @@ export default defineComponent({
     ArtistCard,
   },
 
+  mounted() {
+    document.title = "MusicAPP"
+  },
+
   methods: {
     toggleRecommendedSongs() {
       this.showTopSongs = !this.showTopSongs;

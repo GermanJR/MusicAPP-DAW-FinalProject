@@ -4,6 +4,11 @@ import {REDIRECT_URI} from "@/utils/const_utils";
 
 export default defineComponent({
   name: "HomePage",
+
+  mounted() {
+    document.title = "MusicAPP"
+  },
+
   methods: {
     async handleLogin() {
       const client_id = import.meta.env.VITE_CLIENT_ID;
