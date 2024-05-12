@@ -131,6 +131,56 @@ export default {
         console.warn("Tonality not found.")
       }
     },
+
+    getLoudness() {
+      try {
+        return this.songAnalysis.track.loudness
+      }catch (error) {
+        console.warn("Loudness warning.")
+      }
+    },
+
+    getTotalBeats() {
+      try {
+        return this.songAnalysis.beats.length
+      }catch (error) {
+        console.warn("Beats warning.")
+      }
+    },
+
+    getTotalSections() {
+      try {
+        return this.songAnalysis.sections.length
+      }catch (error) {
+        console.warn("Sections warning.")
+      }
+    },
+
+    getFadeIn() {
+      try {
+        const fadeIn =  this.songAnalysis.track.end_of_fade_in
+        if (fadeIn === 0) {
+          return "No Fade-in"
+        } else {
+          return fadeIn + " seconds"
+        }
+      }catch (error) {
+        console.warn("Fade in warning.")
+      }
+    },
+
+    getFadeOut() {
+      try {
+        const fadeOut =  this.songAnalysis.track.start_of_fade_out
+        if (fadeOut === this.songAnalysis.track.duration) {
+          return "No Fade-out"
+        } else {
+          return fadeOut  + " seconds"
+        }
+      }catch (error) {
+        console.warn("Fade in warning.")
+      }
+    },
   }
 }
 </script>
@@ -143,7 +193,7 @@ export default {
     <h1>Analysing: {{song.name}}</h1>
     <div class="px-4" id="photo_container"><img :src="getImage()" alt="Album photo" class="img-fluid"></div>
     <h2>Audio features:</h2>
-    <h5>Tempo: {{ songFeatures.tempo }} BPM.</h5>
+    <h5 class="mt-2 mb-4">Tempo: {{ songFeatures.tempo }} BPM.</h5>
 
     <div class="row" style="width: 300px;">
       <h5 class="col-12 col-sm-6">Danceability</h5>
@@ -173,6 +223,11 @@ export default {
     <h2>Audio analysis:</h2>
     <h5>Tonality: {{ getTonality() }}</h5>
     <h5>Key: {{ getKey() }}</h5>
+    <h5>Loudness: {{ getLoudness() }}DB</h5>
+    <h5>Total beats: {{ getTotalBeats() }} beats</h5>
+    <h5>Total sections: {{ getTotalSections() }} sections</h5>
+    <h5>Fade-in end: {{ getFadeIn() }}</h5>
+    <h5>Fade.out start: {{ getFadeOut() }}</h5>
 
   </div>
 </template>
