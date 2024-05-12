@@ -32,6 +32,8 @@ export default {
         this.loadDanceability()
         this.loadEnergy()
         this.loadValence()
+        this.loadInstrumentPresence()
+        this.loadVocalPresence()
       } else {
         throw new Error("Song ID not found.")
       }
@@ -71,6 +73,64 @@ export default {
       const value = this.songFeatures.valence
       valenceSlider.style.background = `linear-gradient(to right, #2200e5 0%, #6eff42 ${value * 100}%, #808080 ${value * 100}%, #808080 100%)`;
     },
+
+    loadInstrumentPresence() {
+      const instrumentSlider = document.getElementById('instrumentalSlider');
+      const value = this.songFeatures.instrumentalness
+      instrumentSlider.style.background = `linear-gradient(to right, #fefcea 0%, #f1da36 ${value * 100}%, #808080 ${value * 100}%, #808080 100%)`;
+    },
+
+    loadVocalPresence() {
+      const vocalSlider = document.getElementById('vocalSlider');
+      const value = this.songFeatures.speechiness
+      vocalSlider.style.background = `linear-gradient(to right, #752201 0%, #f0b7a1 ${value * 100}%, #808080 ${value * 100}%, #808080 100%)`;
+    },
+
+    getKey() {
+      try {
+        switch (this.songAnalysis.track.key) {
+          case -1:
+            return "Not found"
+          case 0:
+            return "C / Do M"
+          case 1:
+            return "C# / la m"
+          case 2:
+            return "D / Re M"
+          case 3:
+            return "D# / do# m"
+          case 4:
+            return "E / Mi M"
+          case 5:
+            return "F / Fa M"
+          case 6:
+            return "F# / re# m"
+          case 7:
+            return "G / Sol M"
+          case 8:
+            return "G# / fa# m"
+          case 9:
+            return "A / La M"
+          case 10:
+            return "A# / sol# m"
+          case 11:
+            return "B / Si M"
+          default:
+            console.error("Strange key value detected: " + this.songAnalysis.track.key)
+            return ""
+        }
+      }catch (error){
+        console.warn("Error getting key: " + error)
+      }
+    },
+
+    getTonality() {
+      try {
+        return this.songAnalysis.track.mode === 1 ? 'Major' : 'Minor'
+      }catch (error) {
+        console.warn("Tonality not found.")
+      }
+    },
   }
 }
 </script>
@@ -95,12 +155,24 @@ export default {
       <input class="col-12 col-sm-6" type="range" min="0" max="1" :value="this.songFeatures.energy" step="any" id="energySlider" disabled>
     </div>
 
-    <div class="row mb-5" style="width: 300px;">
+    <div class="row" style="width: 300px;">
       <h5 class="col-12 col-sm-6">Happiness</h5>
       <input class="col-12 col-sm-6" type="range" min="0" max="1" :value="this.songFeatures.valence" step="any" id="valenceSlider" disabled>
     </div>
 
+    <div class="row mt-4 mb-2" style="width: 300px;">
+      <h5 class="col-12 col-sm-6">Instrument presence</h5>
+      <input class="col-12 col-sm-6" type="range" min="0" max="1" :value="this.songFeatures.instrumentalness" step="any" id="instrumentalSlider" disabled>
+    </div>
+
+    <div class="row mb-5" style="width: 300px;">
+      <h5 class="col-12 col-sm-6">Vocal presence</h5>
+      <input class="col-12 col-sm-6" type="range" min="0" max="1" :value="this.songFeatures.speechiness" step="any" id="vocalSlider" disabled>
+    </div>
+
     <h2>Audio analysis:</h2>
+    <h5>Tonality: {{ getTonality() }}</h5>
+    <h5>Key: {{ getKey() }}</h5>
 
   </div>
 </template>
@@ -208,14 +280,60 @@ input[type=range] {
   appearance: none;
   width: 25px;
   height: 25px;
-//background: url('/thunder.png') no-repeat center center;
   background-size: cover;
 }
 
 #valenceSlider::-moz-range-thumb {
   width: 25px;
   height: 25px;
-//background: url('/thunder.png') no-repeat center center;
+  background-size: cover;
+}
+
+#instrumentalSlider {
+  -webkit-appearance: none;
+  height: 25px;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+  margin-top: 10px;
+}
+
+#instrumentalSlider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  background-size: cover;
+}
+
+#instrumentalSlider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  background-size: cover;
+}
+
+#vocalSlider {
+  -webkit-appearance: none;
+  height: 25px;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+  margin-top: 10px;
+}
+
+#vocalSlider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  background-size: cover;
+}
+
+#vocalSlider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
   background-size: cover;
 }
 </style>

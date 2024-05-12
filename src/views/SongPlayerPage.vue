@@ -19,7 +19,12 @@ export default {
     },
 
     getAvailabilityBlock() {
-      return this.getAvailability()
+      try {
+        return this.getAvailability()
+      }catch (error) {
+        console.warn("Include triggered on availability block")
+        return ""
+      }
     }
   },
 
