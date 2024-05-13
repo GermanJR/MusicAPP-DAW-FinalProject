@@ -7,6 +7,7 @@ import SongCard from "@/components/SongCard.vue";
 import ArtistCard from "@/components/ArtistCard.vue";
 import {messageStore} from "@/stores/messagesStore.js";
 import {handleError} from "@/utils/error_handler.js";
+import {setupPlayer} from "@/utils/web_player.js";
 
 export default defineComponent({
   name: "DashboardPage",
@@ -36,6 +37,7 @@ export default defineComponent({
 
   mounted() {
     document.title = "MusicAPP"
+    setupPlayer()
   },
 
   methods: {
