@@ -1,5 +1,5 @@
 <template>
-  <h2>Categories</h2>
+  <h2 class="text-center mt-4">Spotify Categories</h2>
   <div class="container">
     <div class="row text-center justify-content-center">
       <category-card v-for="category in categories.items" :key="category.id" :category-received="category"></category-card>

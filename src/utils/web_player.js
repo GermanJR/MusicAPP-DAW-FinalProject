@@ -31,9 +31,9 @@ export function setupPlayer() {
             setPlayer(player);
 
             player.addListener('ready', ({device_id}) => {
-                messages.addMessage("success", "The player is ready.")
+                //messages.addMessage("success", "The player is ready.")
                 localStorage.setItem("player_id", device_id)
-                console.log('Ready with Device ID', device_id);
+                //console.log('Ready with Device ID', device_id);
             });
 
             player.addListener('not_ready', ({device_id}) => {

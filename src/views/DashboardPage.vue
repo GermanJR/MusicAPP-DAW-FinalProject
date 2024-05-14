@@ -27,6 +27,7 @@ export default defineComponent({
       topArtists: {},
       periodSelectValue: "medium_term",
       periodSelectValueArtists: "medium_term",
+      playerSetUp: false,
     }
   },
 
@@ -37,7 +38,10 @@ export default defineComponent({
 
   mounted() {
     document.title = "MusicAPP"
-    setupPlayer()
+    if (!this.playerSetUp) {
+      setupPlayer()
+      this.playerSetUp = true
+    }
   },
 
   methods: {
