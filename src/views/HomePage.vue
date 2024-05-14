@@ -4,11 +4,17 @@ import {REDIRECT_URI} from "@/utils/const_utils";
 
 export default defineComponent({
   name: "HomePage",
+
+  mounted() {
+    document.title = "MusicAPP"
+  },
+
   methods: {
     async handleLogin() {
       const client_id = import.meta.env.VITE_CLIENT_ID;
       const redirect_uri = REDIRECT_URI;
-      const scope = 'user-read-private user-read-email user-top-read streaming app-remote-control playlist-read-private user-read-playback-state user-modify-playback-state user-read-currently-playing user-library-modify user-library-read';
+      const scope = 'user-read-private user-read-email user-top-read streaming app-remote-control playlist-read-private user-read-playback-state ' +
+                    'user-modify-playback-state user-read-currently-playing user-library-modify user-library-read ';
       const state = this.generateRandomString(16);
 
       const params = new URLSearchParams({
@@ -38,7 +44,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="container">
+  <div class="container main">
     <div class="row justify-content-center">
       <img alt="MusicAPP logo" src="/musicapp_logo.png" class="logo">
     </div>
@@ -81,5 +87,12 @@ export default defineComponent({
 .logo {
   height: 300px;
   width: auto;
+}
+
+.main {
+  text-align: center;
+  color: #FFFFFF;
+  background-color: #181818;
+  padding: 40px 0;
 }
 </style>

@@ -14,6 +14,10 @@ export default {
     }
   },
 
+  mounted() {
+    document.title = "MusicAPP"
+  },
+
   computed: {
     areSongsInArray() {
       return this.recommendedSongs.length !== 0;
@@ -35,8 +39,7 @@ export default {
         this.recommendedSongs = recommendationsResponse.tracks
       }catch (error){
         const messages = messageStore()
-        messages.addMessage("danger", "Error while trying to find songs.")
-        console.error(error)
+        messages.addMessage("danger", "Error while trying to find songs: " + error)
       }
     },
 

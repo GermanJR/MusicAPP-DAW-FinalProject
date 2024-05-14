@@ -2,6 +2,7 @@
 import {messageStore} from "@/stores/messagesStore.js";
 import {changeSongPlaybackState, checkSavedSongs, getSongById, saveSongs} from "@/functions/songRequest.js";
 import getPlayer from "@/utils/web_player.js";
+import {userStore} from "@/stores/userStore.js";
 
 export default {
   name: "SongPlayerPage",
@@ -16,6 +17,20 @@ export default {
     getButtonText() {
       return this.clicked ? "Saved!" : "Save on Spotify"
     },
+
+    getAvailabilityBlock() {
+      try {
+        return this.getAvailability()
+      }catch (error) {
+        console.warn("Include triggered on availability block")
+        return ""
+      }
+    },
+
+    isUserPremium() {
+      const myUserStore =  userStore()
+      return myUserStore.hasUserPremium()
+    }
   },
 
   data() {
@@ -29,6 +44,7 @@ export default {
   },
 
   async mounted() {
+    document.title = "MusicAPP player"
     const messages = messageStore();
 
     if (this.isSongIdSet) {
@@ -161,6 +177,33 @@ export default {
       } else {
         messages.addMessage("danger", "Error saving song.")
       }
+    },
+
+    getAvailability() {
+      const myUserStore = userStore()
+      const user = myUserStore.getCurrentUser()
+      if (user){
+        const songAvailableCountries = this.currentSong.available_markets
+        if (songAvailableCountries.includes(user.country)) {
+          return `<div class="px-2" style="background-color: rgba(29,185,84,0.6); border: solid 2px #029f3b; border-radius: 20px; max-width: 125px;">
+                    <img class="mt-3" src="/correct.png" alt="icon" style="max-width: 50px">
+                    <p>Song available.</p>
+                  </div>`
+          } else {
+            return `<div style="background-color: rgba(187,0,0,0.6); border: solid 2px rgb(187,0,0); border-radius: 20px; max-width: 125px;">
+                    <img class="mt-3" src="/incorrect.png" alt="icon" style="max-width: 50px">
+                    <p>Song not available.</p>
+                  </div>`
+          }
+        } else {
+          console.warn("User not found.")
+          return ""
+        }
+    },
+
+    redirectToAnalysis() {
+      const routeData = this.$router.resolve({name: 'analysis', params: {id: this.currentSong.id}});
+      window.open(routeData.href, '_blank');
     }
   },
 }
@@ -178,15 +221,28 @@ export default {
       <h6>{{ getDurationFormatted(currentSong.duration_ms) }}</h6>
       <h5>{{ getArtists() }}</h5>
 
-      <button type="button" id="play_button" @click="handleSongStatus" class="mb-3">
+      <h5 class="mt-4 mb-2">Availability in your country:</h5>
+
+      <div class="d-flex flex-column align-items-center" v-html="getAvailabilityBlock"></div>
+
+      <button v-if="isUserPremium" type="button" id="play_button" @click="handleSongStatus" class="my-3">
         <img v-if="playing" id="button_icon_stop" src="/stopIcon.png" alt="Stop Icon">
         <img v-if="!playing" id="button_icon" src="/play-332-48.png" alt="Play Icon">
       </button>
+
+      <button v-if="!isUserPremium" type="button" id="play_button_denied" class="my-3" disabled>
+        <img id="button_icon" src="/play-332-48.png" alt="Play Icon">
+      </button>
+      <h6 class="text-center mb-5" v-if="!isUserPremium">You have to be a Spotify premium user in order to use the web player.</h6>
 
       <div style="max-width: 275px;" v-html="getPopularity()"></div>
 
       <button v-if="!isSongSaved" :disabled="clicked" type="button" @click="saveSongOnSpotify" id="openButton"
               class="col-12 col-sm-6 my-3">{{ getButtonText }}
+      </button>
+
+      <button type="button" @click="redirectToAnalysis" id="openButton"
+              class="col-12 col-sm-6 my-3">More details
       </button>
     </div>
   </div>
@@ -198,6 +254,17 @@ export default {
     height: 60px;
     width: 60px;
     background-color: #1ED760;
+    border: solid 2px #000;
+    border-radius: 1000px;
+    color: #000;
+    font-weight: bold;
+    padding-top: 2px;
+}
+
+#play_button_denied {
+    height: 60px;
+    width: 60px;
+    background-color: rgba(30, 215, 96, 0.24);
     border: solid 2px #000;
     border-radius: 1000px;
     color: #000;
@@ -218,8 +285,9 @@ export default {
 
 #main_container {
   margin-top: 20px;
-  background-color: #181818;
+  background-color: #282828;
   color: #f2f2f2;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
   border-radius: 50px;
   display: flex !important;
   flex-direction: column !important;

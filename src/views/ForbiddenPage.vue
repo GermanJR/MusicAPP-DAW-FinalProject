@@ -2,7 +2,11 @@
 import {defineComponent} from 'vue'
 
 export default defineComponent({
-  name: "ForbiddenPage"
+  name: "ForbiddenPage",
+
+  mounted() {
+    document.title = "MusicAPP 401"
+  },
 })
 </script>
 

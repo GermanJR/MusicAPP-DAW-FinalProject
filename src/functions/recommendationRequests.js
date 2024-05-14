@@ -10,7 +10,11 @@ export async function getRecommendations(accessToken, range, limit) {
         }
     });
     if (!recommendationsResponse.ok) {
-        throw new Error("Error! Could not get recommendations.");
+        if (recommendationsResponse.status === 400) {
+            throw new Error("The user has no Top Songs.")
+        } else {
+            throw new Error("Error! Could not get recommendations.");
+        }
     }
     return await recommendationsResponse.json();
 }

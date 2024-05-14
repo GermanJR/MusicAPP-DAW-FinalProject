@@ -1,5 +1,5 @@
 <template>
-  <h2>Categories</h2>
+  <h2 class="text-center mt-4">Spotify Categories</h2>
   <div class="container">
     <div class="row text-center justify-content-center">
       <category-card v-for="category in categories.items" :key="category.id" :category-received="category"></category-card>
@@ -11,7 +11,6 @@
       <button v-if="this.categories.next" type="button" class="col-12 col-sm-3 text-center mx-auto" @click="reloadNewCategories(this.categories.next)">Next</button>
     </div>
   </div>
-  <div style="margin-bottom: 100px"></div>
 </template>
 
 <script>
@@ -31,6 +30,7 @@ export default {
   },
 
   mounted() {
+    document.title = "MusicAPP"
     this.reloadCategories();
   },
 
@@ -74,5 +74,6 @@ button {
   font-weight: bold;
   padding-top: 2px;
   margin-top: 25px;
+  margin-bottom: 120px;
 }
 </style>

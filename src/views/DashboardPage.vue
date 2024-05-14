@@ -6,6 +6,8 @@ import {getUserTopItems} from "@/functions/mostUsedRequests.js";
 import SongCard from "@/components/SongCard.vue";
 import ArtistCard from "@/components/ArtistCard.vue";
 import {messageStore} from "@/stores/messagesStore.js";
+import {handleError} from "@/utils/error_handler.js";
+import {setupPlayer} from "@/utils/web_player.js";
 
 export default defineComponent({
   name: "DashboardPage",
@@ -25,12 +27,21 @@ export default defineComponent({
       topArtists: {},
       periodSelectValue: "medium_term",
       periodSelectValueArtists: "medium_term",
+      playerSetUp: false,
     }
   },
 
   components: {
     SongCard,
     ArtistCard,
+  },
+
+  mounted() {
+    document.title = "MusicAPP"
+    if (!this.playerSetUp) {
+      setupPlayer()
+      this.playerSetUp = true
+    }
   },
 
   methods: {
@@ -60,9 +71,9 @@ export default defineComponent({
           messages.addMessage("danger", "Error! Type not supported.")
         }
       } catch (error) {
-        const messages = messageStore()
-        messages.addMessage("danger", "Error! Token not found.")
         console.error(error)
+        handleError("token_expired")
+        this.$router.push("/")
       }
     }
   }
@@ -77,7 +88,7 @@ export default defineComponent({
     </div>
     <div class="row">
       <h3 class="col-12">Here are some interesting features for you:</h3>
-      <h4 class="col-12 mt-5">Discover your top more listened songs.</h4>
+      <h4 class="col-12 mt-5">Discover your top listened songs.</h4>
       <button v-if="!showTopSongs" type="button" @click="toggleRecommendedSongs" id="openButton">Try it!</button>
       <div v-if="showTopSongs" class="row">
         <p class="col-12 col-sm-6">Number of songs:</p>
@@ -169,4 +180,13 @@ b {
 .row{
   justify-content: center;
 }
+
+#period {
+  background-color: #181818;
+  max-height: 40px;
+  height: 40px;
+  color: #f2f2f2;
+}
+
+
 </style>

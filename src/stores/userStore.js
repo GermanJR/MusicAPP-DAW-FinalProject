@@ -31,6 +31,11 @@ export const userStore = defineStore("user", {
                 return this.currentUser.images.url
             }
             return "/default_pfp.jpg"
+        },
+
+        hasUserPremium() {
+            return this.currentUser.product === "premium";
+
         }
     }
 })

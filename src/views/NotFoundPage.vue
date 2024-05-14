@@ -2,7 +2,11 @@
 import {defineComponent} from 'vue'
 
 export default defineComponent({
-  name: "NotFoundPage"
+  name: "NotFoundPage",
+
+  mounted() {
+    document.title = "MusicAPP 404"
+  },
 })
 </script>
 
