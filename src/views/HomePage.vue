@@ -44,7 +44,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="container">
+  <div class="container main">
     <div class="row justify-content-center">
       <img alt="MusicAPP logo" src="/musicapp_logo.png" class="logo">
     </div>
@@ -87,5 +87,12 @@ export default defineComponent({
 .logo {
   height: 300px;
   width: auto;
+}
+
+.main {
+  text-align: center;
+  color: #FFFFFF;
+  background-color: #181818;
+  padding: 40px 0;
 }
 </style>

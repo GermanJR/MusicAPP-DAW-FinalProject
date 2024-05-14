@@ -144,7 +144,7 @@ export default {
 <div class="container p-3" id="main_container">
   <h1 class="col-12 col-sm-6 text-center"><strong>{{ artist.name }}</strong></h1>
   <div class="row text-center d-flex flex-column align-content-center align-items-center">
-    <div class="col-12 col-sm-6  px-4" id="photo_container"><img :src="getImage()" alt="Artist photo" class="img-fluid"></div>
+    <div class="col-12 col-sm-6 px-4 my-4" id="photo_container"><img :src="getImage()" alt="Artist photo" class="img-fluid"></div>
 
   </div>
   <div class="row text-center d-flex flex-column align-content-center align-items-center">
@@ -153,7 +153,7 @@ export default {
   </div>
 
   <div class="row text-center d-flex flex-column align-content-center align-items-center">
-    <h3 class="col-12">Top 3 {{ artist.name }} songs:</h3>
+    <h3 class="col-12 mb-4">Top 3 {{ artist.name }} songs:</h3>
     <song-card v-for="song in this.topArtistSongs" :key="song" :song-received="song"></song-card>
   </div>
 

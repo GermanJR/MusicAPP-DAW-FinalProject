@@ -189,8 +189,8 @@ export default {
   <div v-if="!isSongIdSet" class="container text-center">
     <h1 class="text-bg-danger p-3" style="color: black !important;">Song is not provided!</h1>
   </div>
-  <div v-if="isSongIdSet" class="container pt-3" id="main_container">
-    <h1>Analysing: {{song.name}}</h1>
+  <div v-if="isSongIdSet" class="container p-3" id="main_container">
+    <h1 class="my-4">Analysing: {{song.name}}</h1>
     <div class="px-4" id="photo_container"><img :src="getImage()" alt="Album photo" class="img-fluid"></div>
     <h2>Audio features:</h2>
     <h5 class="mt-2 mb-4">Tempo: {{ songFeatures.tempo }} BPM.</h5>
@@ -235,8 +235,9 @@ export default {
 <style scoped>
 #main_container {
   margin-top: 20px;
-  background-color: #181818;
+  background-color: #282828;
   color: #f2f2f2;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
   border-radius: 50px;
   display: flex !important;
   flex-direction: column !important;

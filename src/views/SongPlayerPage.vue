@@ -285,8 +285,9 @@ export default {
 
 #main_container {
   margin-top: 20px;
-  background-color: #181818;
+  background-color: #282828;
   color: #f2f2f2;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
   border-radius: 50px;
   display: flex !important;
   flex-direction: column !important;

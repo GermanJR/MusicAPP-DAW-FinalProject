@@ -11,7 +11,6 @@
       <button v-if="this.categories.next" type="button" class="col-12 col-sm-3 text-center mx-auto" @click="reloadNewCategories(this.categories.next)">Next</button>
     </div>
   </div>
-  <div style="margin-bottom: 100px"></div>
 </template>
 
 <script>
@@ -75,5 +74,6 @@ button {
   font-weight: bold;
   padding-top: 2px;
   margin-top: 25px;
+  margin-bottom: 120px;
 }
 </style>
