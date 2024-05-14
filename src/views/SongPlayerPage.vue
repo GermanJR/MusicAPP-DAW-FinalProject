@@ -25,6 +25,11 @@ export default {
         console.warn("Include triggered on availability block")
         return ""
       }
+    },
+
+    isUserPremium() {
+      const myUserStore =  userStore()
+      return myUserStore.hasUserPremium()
     }
   },
 
@@ -220,10 +225,15 @@ export default {
 
       <div class="d-flex flex-column align-items-center" v-html="getAvailabilityBlock"></div>
 
-      <button type="button" id="play_button" @click="handleSongStatus" class="my-3">
+      <button v-if="isUserPremium" type="button" id="play_button" @click="handleSongStatus" class="my-3">
         <img v-if="playing" id="button_icon_stop" src="/stopIcon.png" alt="Stop Icon">
         <img v-if="!playing" id="button_icon" src="/play-332-48.png" alt="Play Icon">
       </button>
+
+      <button v-if="!isUserPremium" type="button" id="play_button_denied" class="my-3" disabled>
+        <img id="button_icon" src="/play-332-48.png" alt="Play Icon">
+      </button>
+      <h6 class="text-center mb-5" v-if="!isUserPremium">You have to be a Spotify premium user in order to use the web player.</h6>
 
       <div style="max-width: 275px;" v-html="getPopularity()"></div>
 
@@ -244,6 +254,17 @@ export default {
     height: 60px;
     width: 60px;
     background-color: #1ED760;
+    border: solid 2px #000;
+    border-radius: 1000px;
+    color: #000;
+    font-weight: bold;
+    padding-top: 2px;
+}
+
+#play_button_denied {
+    height: 60px;
+    width: 60px;
+    background-color: rgba(30, 215, 96, 0.24);
     border: solid 2px #000;
     border-radius: 1000px;
     color: #000;

@@ -223,11 +223,11 @@ export default {
     <h2>Audio analysis:</h2>
     <h5>Tonality: {{ getTonality() }}</h5>
     <h5>Key: {{ getKey() }}</h5>
-    <h5>Loudness: {{ getLoudness() }}DB</h5>
+    <h5>Loudness: {{ getLoudness() }} DB</h5>
     <h5>Total beats: {{ getTotalBeats() }} beats</h5>
     <h5>Total sections: {{ getTotalSections() }} sections</h5>
     <h5>Fade-in end: {{ getFadeIn() }}</h5>
-    <h5>Fade.out start: {{ getFadeOut() }}</h5>
+    <h5>Fade-out start: {{ getFadeOut() }}</h5>
 
   </div>
 </template>
