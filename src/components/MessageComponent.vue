@@ -9,7 +9,7 @@ export default {
     if(this.message.type !== 'danger') {
       setTimeout(() => {
         this.delMessage()
-      }, 4000);
+      }, 6000);
     }
   },
   computed: {
