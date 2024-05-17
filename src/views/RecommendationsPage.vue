@@ -3,6 +3,7 @@ import {getRecommendations} from "@/functions/recommendationRequests.js";
 import {messageStore} from "@/stores/messagesStore.js";
 import SongCard from "@/components/SongCard.vue";
 import {saveSongs} from "@/functions/songRequest.js";
+import {memoryItemsStore} from "@/stores/memoryItemsStore.js";
 
 export default {
   name: "RecommendationsPage",
@@ -16,6 +17,17 @@ export default {
 
   mounted() {
     document.title = "MusicAPP"
+  },
+
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      vm.loadDataRecommended();
+    });
+  },
+
+  beforeRouteUpdate(to, from, next) {
+    this.loadDataRecommended();
+    next();
   },
 
   computed: {
@@ -33,10 +45,22 @@ export default {
   },
 
   methods: {
+    loadDataRecommended() {
+      const itemStore = memoryItemsStore()
+      const memoryRecommendedSongs = itemStore.getRecommendedSongs
+
+      if (memoryRecommendedSongs.length !== 0) {
+        this.recommendedSongs = memoryRecommendedSongs
+      }
+    },
+
     async handleRecommendedSongsCall () {
       try {
         const recommendationsResponse = await getRecommendations(localStorage.getItem("access_token"), "medium_term", this.sliderSongValue)
         this.recommendedSongs = recommendationsResponse.tracks
+
+        const itemStore = memoryItemsStore()
+        itemStore.saveRecommendedSongs(this.recommendedSongs)
       }catch (error){
         const messages = messageStore()
         messages.addMessage("danger", "Error while trying to find songs: " + error)
