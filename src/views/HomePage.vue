@@ -14,7 +14,8 @@ export default defineComponent({
       const client_id = import.meta.env.VITE_CLIENT_ID;
       const redirect_uri = REDIRECT_URI;
       const scope = 'user-read-private user-read-email user-top-read streaming app-remote-control playlist-read-private user-read-playback-state ' +
-                    'user-modify-playback-state user-read-currently-playing user-library-modify user-library-read ';
+                    'user-modify-playback-state user-read-currently-playing user-library-modify user-library-read playlist-modify-public playlist-modify-private ' +
+                    'ugc-image-upload';
       const state = this.generateRandomString(16);
 
       const params = new URLSearchParams({
