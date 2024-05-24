@@ -7,12 +7,17 @@ import {memoryItemsStore} from "@/stores/memoryItemsStore.js";
 
 import * as yup from 'yup'
 import {ErrorMessage, Field, Form} from "vee-validate";
+import {addItemsToPlaylist, createPlaylist} from "@/functions/playlistRequests.js";
+import {userStore} from "@/stores/userStore.js";
 
 export default {
   name: "RecommendationsPage",
 
   data() {
-    const validationSchema = yup.object({})
+    const validationSchema = yup.object({
+      name: yup.string().required("Please enter a name."),
+      privacy: yup.string().required("Please select the visibility."),
+    })
     return {
       recommendedSongs: [],
       sliderSongValue: 5,
@@ -60,7 +65,7 @@ export default {
     // eslint-disable-next-line vue/no-reserved-component-names
     Form,
     Field,
-    //ErrorMessage,
+    ErrorMessage,
   },
 
   methods: {
@@ -101,8 +106,30 @@ export default {
       return this.recommendedSongs.map(song => song.id).join(",")
     },
 
-    handlePlaylistCreation() {
+    async handlePlaylistCreation() {
+      const messages = messageStore()
+      const myUserStore = userStore()
+      try {
+        const token = localStorage.getItem("access_token")
+        const userId = myUserStore.currentUser.id
+        let visibility = null
+        if (token && userId) {
+          if (this.newPlaylist.privacy === "private") {
+            visibility = false
+          } else if (this.newPlaylist.privacy === "public") {
+            visibility = true
+          } else {
+            messages.addMessage("danger", "Strange visibility value detected: " + this.newPlaylist.privacy)
+            return
+          }
+          const createdPlaylist = await createPlaylist(token, userId, this.newPlaylist.name, this.newPlaylist.description, visibility)
+          await addItemsToPlaylist(token, userId, createdPlaylist.id, this.getAllSongIds())
 
+          messages.addMessage("success", `The new playlist "${this.newPlaylist.name}" has been created.`)
+        }
+      } catch (error){
+        messages.addMessage("danger", "Error while creating playlist: " + error)
+      }
     },
 
     handleImageUpload() {
@@ -161,6 +188,7 @@ export default {
       <div class="mb-3">
         <label for="name" class="form-label"><strong>Playlist Name</strong></label>
         <Field name="name" type="text" class="form-control" v-model="newPlaylist.name" placeholder="Name of the playlist."  />
+        <ErrorMessage class="error" name="name"></ErrorMessage>
       </div>
       <div class="mb-3">
         <label for="description" class="form-label"><strong>Description</strong></label>
@@ -176,6 +204,7 @@ export default {
             <span class="me-3">Public</span>
             <Field name="privacy" type="radio" value="public" v-model="newPlaylist.privacy" />
         </div>
+        <ErrorMessage class="error" name="privacy"></ErrorMessage>
       </div>
       <div class="mb-3">
         <label for="name" class="form-label"><strong>Image cover</strong></label>
@@ -185,7 +214,7 @@ export default {
             class="form-control"
             accept=".jpg, .jpeg, .png"
             @change="handleImageUpload"
-        />
+            alt="Image input"/>
       </div>
       <button type="submit" class="btn btn-primary" id="newPlaylistButton">Create Playlist</button>
     </Form>
@@ -231,5 +260,9 @@ export default {
   font-weight: bold;
   padding-top: 2px;
   margin-top: 25px;
+}
+
+.error {
+  color: crimson;
 }
 </style>

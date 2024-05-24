@@ -12,26 +12,29 @@ export async function getUserPlaylists(accessToken) {
 }
 
 export async function createPlaylist(accessToken, userId, name, description, isPublic) {
-
     const response = await fetch(`https://api.spotify.com/v1/users/${userId}/playlists`, {
         method: 'POST',
         headers: {
             Authorization: 'Bearer ' + accessToken,
             'Content-Type': 'application/json'
         },
-        body: {
+        body: JSON.stringify({
             "name": name,
             "description": description,
             "public": isPublic
-        }
+        })
     });
     if (!response.ok) {
-        throw new Error("Error! Could not create a new playlist: " + response.statusText)
+        throw new Error("Error! Could not create a new playlist: " + await response.text())
     }
     return await response.json();
 }
 
 export async function addItemsToPlaylist(accessToken, userId, playlistId, uris) {
+    const formattedUris = uris.split(',').map(id => `spotify:track:${id}`) + "";
+    const formattedUrisArray = formattedUris.split(',')
+    console.log(formattedUris)
+    console.log(formattedUrisArray)
 
     const response = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
         method: 'POST',
@@ -39,10 +42,27 @@ export async function addItemsToPlaylist(accessToken, userId, playlistId, uris) 
             Authorization: 'Bearer ' + accessToken,
             'Content-Type': 'application/json'
         },
+        body: JSON.stringify({
+            "uris": formattedUrisArray,
+        })
+    });
+    if (!response.ok) {
+        console.log( await response.text())
+        throw new Error("Error! Could not add items to playlist: " + await response.text())
+    }
+    return await response.json();
+}
+
+export async function addImageToPlaylist(accessToken, playlistId, image) {
+
+    const response = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/images`, {
+        method: 'PUT',
+        headers: {
+            Authorization: 'Bearer ' + accessToken,
+            'Content-Type': 'image'
+        },
         body: {
-            "uris": [
-                uris
-            ]
+            image
         }
     });
     if (!response.ok) {
