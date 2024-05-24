@@ -33,8 +33,6 @@ export async function createPlaylist(accessToken, userId, name, description, isP
 export async function addItemsToPlaylist(accessToken, userId, playlistId, uris) {
     const formattedUris = uris.split(',').map(id => `spotify:track:${id}`) + "";
     const formattedUrisArray = formattedUris.split(',')
-    console.log(formattedUris)
-    console.log(formattedUrisArray)
 
     const response = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
         method: 'POST',
@@ -47,27 +45,24 @@ export async function addItemsToPlaylist(accessToken, userId, playlistId, uris) 
         })
     });
     if (!response.ok) {
-        console.log( await response.text())
         throw new Error("Error! Could not add items to playlist: " + await response.text())
     }
     return await response.json();
 }
 
 export async function addImageToPlaylist(accessToken, playlistId, image) {
-
+    console.log(playlistId)
+    console.log(image)
     const response = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/images`, {
         method: 'PUT',
         headers: {
             Authorization: 'Bearer ' + accessToken,
-            'Content-Type': 'image'
         },
-        body: {
-            image
-        }
+        body: image
     });
     if (!response.ok) {
-        throw new Error("Error! Could not add items to playlist: " + response.statusText)
+        throw new Error("Error! Could not add items to playlist: " + await response.text())
     }
-    return await response.json();
+    return response.ok;
 }
 

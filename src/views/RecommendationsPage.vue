@@ -7,7 +7,7 @@ import {memoryItemsStore} from "@/stores/memoryItemsStore.js";
 
 import * as yup from 'yup'
 import {ErrorMessage, Field, Form} from "vee-validate";
-import {addItemsToPlaylist, createPlaylist} from "@/functions/playlistRequests.js";
+import {addImageToPlaylist, addItemsToPlaylist, createPlaylist} from "@/functions/playlistRequests.js";
 import {userStore} from "@/stores/userStore.js";
 
 export default {
@@ -27,6 +27,7 @@ export default {
         description: "",
         privacy: "private",
         image: null,
+        imageBase64: "",
       },
       imagePreview: {
         value: null,
@@ -125,27 +126,94 @@ export default {
           const createdPlaylist = await createPlaylist(token, userId, this.newPlaylist.name, this.newPlaylist.description, visibility)
           await addItemsToPlaylist(token, userId, createdPlaylist.id, this.getAllSongIds())
 
+          console.log(this.newPlaylist.image)
+          if (this.newPlaylist.image !== null) {
+            await this.convertFileToBase64(this.newPlaylist.image)
+            await addImageToPlaylist(token, createdPlaylist.id, this.newPlaylist.imageBase64)
+          }
+
           messages.addMessage("success", `The new playlist "${this.newPlaylist.name}" has been created.`)
         }
       } catch (error){
         messages.addMessage("danger", "Error while creating playlist: " + error)
+        console.error(error)
+      }
+    },
+/*
+    handleImageUpload() {
+      const messages = messageStore()
+
+      try {
+        const file = event.target.files[0];
+        if (file && (file.type === 'image/jpeg' || file.type === 'image/png')) {
+          this.newPlaylist.image = file
+        } else {
+          const message = "The image should be a .jpg format."
+          messages.addMessage("warning", message)
+          alert(message)
+        }
+      }catch (error) {
+        messages.addMessage("danger", error)
+        console.error(error)
+      }
+    },
+ */
+    async handleImageUpload(event) {
+      const messages = messageStore();
+
+      try {
+        const file = event.target.files[0];
+        if (file && (file.type === 'image/jpeg' || file.type === 'image/png')) {
+          this.newPlaylist.image = file;
+          //this.imagePreview.value = URL.createObjectURL(file);
+        } else {
+          const message = "The image should be a .jpg or .png format.";
+          messages.addMessage("warning", message);
+          alert(message);
+        }
+      } catch (error) {
+        messages.addMessage("danger", error);
+        console.error(error);
       }
     },
 
-    handleImageUpload() {
-      const file = event.target.files[0];
-      if (file && (file.type === 'image/jpeg' || file.type === 'image/png')) {
-        this.newPlaylist.image = file;
+/*
+    convertFileToBase64(file) {
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        this.newPlaylist.imageBase64 = reader.result.split(',')[1];
+      };
+
+      reader.onerror = (error) => {
+        const messages = messageStore()
+        messages.addMessage("danger", error)
+        console.error('Error: ', error);
+      };
+
+      reader.readAsDataURL(file);
+    },
+
+ */
+
+    convertFileToBase64(file) {
+      return new Promise((resolve, reject) => {
         const reader = new FileReader();
+
         reader.onload = () => {
-          this.imagePreview.value = reader.result;
+          this.newPlaylist.imageBase64 = reader.result.split(',')[1];
+          resolve();
         };
+
+        reader.onerror = (error) => {
+          const messages = messageStore();
+          messages.addMessage("danger", error);
+          console.error('Error: ', error);
+          reject(error);
+        };
+
         reader.readAsDataURL(file);
-      } else {
-        this.newPlaylist.image = null;
-        this.imagePreview.value = null;
-        alert('Only .jpg and .png files are allowed');
-      }
+      });
     },
   }
 }
