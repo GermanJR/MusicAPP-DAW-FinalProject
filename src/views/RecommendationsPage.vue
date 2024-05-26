@@ -37,6 +37,9 @@ export default {
       },
       isUploading: false,
       isLoadingFullPage: true,
+      loadingIconColor: "#1ED760",
+      loadingBackgroundColor: "#989898",
+      loadingIconType: "bars",
       validationSchema,
     }
   },
@@ -258,7 +261,11 @@ export default {
       </div>
       <loading v-model:active="isUploading"
                :can-cancel="false"
-               :is-full-page="isLoadingFullPage"/>
+               :is-full-page="isLoadingFullPage"
+               :color="loadingIconColor"
+               :loader="loadingIconType"
+               :background-color="loadingBackgroundColor"
+      />
       <button type="submit" class="btn btn-primary" id="newPlaylistButton">Create Playlist</button>
     </Form>
     <button v-if="showNewPlaylistForm" type="button" @click="showNewPlaylistForm = false" id="closeButton" class="col-12">
