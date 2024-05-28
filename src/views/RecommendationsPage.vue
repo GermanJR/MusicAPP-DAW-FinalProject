@@ -143,6 +143,7 @@ export default {
           }
 
           messages.addMessage("success", `The new playlist "${this.newPlaylist.name}" has been created.`)
+          this.resetForm()
         }
       } catch (error){
         messages.addMessage("danger", "Error while creating playlist: " + error)
@@ -164,6 +165,7 @@ export default {
           const message = "The image should be a .jpg or .png format.";
           messages.addMessage("warning", message);
           alert(message);
+          this.newPlaylist.image = null;
         }
       } catch (error) {
         messages.addMessage("danger", error);
@@ -190,6 +192,15 @@ export default {
         reader.readAsDataURL(file);
       });
     },
+
+    resetForm() {
+      this.newPlaylist.name = ""
+      this.newPlaylist.description = ""
+      this.newPlaylist.privacy = "private"
+      this.newPlaylist.image = null
+      this.newPlaylist.imageBase64 = ""
+      this.showNewPlaylistForm = false
+    }
   }
 }
 </script>
@@ -226,16 +237,16 @@ export default {
     <button v-if="!showNewPlaylistForm" type="button" @click="showNewPlaylistForm = true" id="newPlaylistButton"
             class="col-12 me-3 mt-2">Create new playlist
     </button>
-    <Form v-if="showNewPlaylistForm" @submit="handlePlaylistCreation" :validation-schema="validationSchema">
+    <Form class="d-flex flex-column justify-content-center align-items-center" v-if="showNewPlaylistForm" @submit="handlePlaylistCreation" :validation-schema="validationSchema">
       <h3><strong>New Playlist</strong></h3>
-      <div class="mb-3">
+      <div class="mb-3 playlist-form-input">
         <label for="name" class="form-label"><strong>Playlist Name</strong></label>
         <Field name="name" type="text" class="form-control" v-model="newPlaylist.name" placeholder="Name of the playlist."  />
         <ErrorMessage class="error" name="name"></ErrorMessage>
       </div>
-      <div class="mb-3">
+      <div class="mb-3 playlist-form-input">
         <label for="description" class="form-label"><strong>Description</strong></label>
-        <Field name="description" as="textarea" class="form-control" v-model="newPlaylist.description" placeholder="Enter a description (optional)" />
+        <Field name="description" as="textarea" class="form-control" v-model="newPlaylist.description" placeholder="Enter a description (optional)" style="min-height: 120px" />
       </div>
       <div class="mb-3 d-flex flex-column flex-start  align-items-center" >
         <label for="privacy"><strong>Visibility</strong></label>
@@ -249,7 +260,7 @@ export default {
         </div>
         <ErrorMessage class="error" name="privacy"></ErrorMessage>
       </div>
-      <div class="mb-3">
+      <div class="mb-3 playlist-form-input">
         <label for="name" class="form-label"><strong>Image cover</strong></label>
         <input
             id="image"
@@ -314,5 +325,37 @@ export default {
 
 .error {
   color: crimson;
+}
+
+.playlist-form-input{
+  width: 60%;
+}
+
+.playlist-form-input input[type=text],
+.playlist-form-input textarea,
+.playlist-form-input input[type=file] {
+  background-color: #3E3E3E;
+  color: #fff;
+  border: none;
+}
+
+.playlist-form-input input[type=text]::placeholder,
+.playlist-form-input textarea::placeholder,
+.playlist-form-input input[type=file]::placeholder {
+  color: #fff;
+}
+
+.playlist-form-input input[type=text]:focus,
+.playlist-form-input textarea:focus,
+.playlist-form-input input[type=file]:focus {
+  border-color: #1ED760;
+  outline: none;
+  box-shadow: 0 0 5px rgba(30, 215, 96, 0.5);
+}
+
+@media (max-width: 768px) {
+  .playlist-form-input {
+    width: 100%;
+  }
 }
 </style>
