@@ -13,14 +13,24 @@ export default defineComponent({
     }),
   },
 
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      vm.fetchUserPlaylists();
+    });
+  },
+
+  beforeRouteUpdate(to, from, next) {
+    this.fetchUserPlaylists();
+    next();
+  },
+
   components: {
     PlaylistCard,
   },
 
   async mounted() {
     document.title = "MusicAPP"
-    const response = await getUserPlaylists(localStorage.getItem("access_token"))
-    this.userPlaylists = response.items
+    await this.fetchUserPlaylists()
   },
 
   data() {
@@ -35,6 +45,11 @@ export default defineComponent({
     goToSpotifyProfile() {
       window.open(this.user.external_urls.spotify, "_blank")
     },
+
+    async fetchUserPlaylists() {
+      const response = await getUserPlaylists(localStorage.getItem("access_token"))
+      this.userPlaylists = response.items
+    }
   },
 })
 </script>
