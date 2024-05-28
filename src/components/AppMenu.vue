@@ -15,7 +15,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <nav v-if="user.display_name" class="app-menu">
+  <nav v-if="user.display_name" class="app-menu mb-4">
     <ul class="menu-list">
       <li><router-link to="/dashboard" class="menu-item">Dashboard</router-link></li>
       <li><router-link to="/recommendations" class="menu-item">Get recommendations</router-link></li>
@@ -27,7 +27,7 @@ export default defineComponent({
 
 <style scoped>
 .app-menu {
-  background-color: #181818;
+  background-color: #080808;
   padding: 16px;
 }
 

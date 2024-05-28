@@ -8,6 +8,7 @@ import ArtistCard from "@/components/ArtistCard.vue";
 import {messageStore} from "@/stores/messagesStore.js";
 import {handleError} from "@/utils/error_handler.js";
 import {setupPlayer} from "@/utils/web_player.js";
+import {memoryItemsStore} from "@/stores/memoryItemsStore.js";
 
 export default defineComponent({
   name: "DashboardPage",
@@ -44,28 +45,63 @@ export default defineComponent({
     }
   },
 
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      vm.loadData();
+    });
+  },
+
+  beforeRouteUpdate(to, from, next) {
+    this.loadData();
+    next();
+  },
+
   methods: {
+    loadData() {
+      const itemStore = memoryItemsStore()
+      const songs = itemStore.getSongs
+      const artists = itemStore.getArtists
+
+      if (songs.length !== 0) {
+        this.topSongs = songs
+        this.showTopSongs = itemStore.getTopSongsStatus
+      }
+
+      if (artists.length !== 0) {
+        this.topArtists = artists
+        this.showTopArtists = itemStore.getTopArtistsStatus
+      }
+    },
+
     toggleRecommendedSongs() {
       this.showTopSongs = !this.showTopSongs;
+      const itemStore = memoryItemsStore()
+      itemStore.updateShowTopSongs(this.showTopSongs)
     },
 
     toggleRecommendedArtists() {
       this.showTopArtists = !this.showTopArtists;
+      const itemStore = memoryItemsStore()
+      itemStore.updateShowTopArtists(this.showTopArtists)
     },
 
     async handleRecommendedItemsCall(type) {
+      const itemStore = memoryItemsStore()
+
       try {
         const token = localStorage.getItem("access_token")
         if (!token) {
-          throw new Error("Tryed to make a request, but token is not defined.")
+          throw new Error("Tried to make a request, but token is not defined.")
         }
 
         if (type === "tracks") {
           const topSongsResponse = await getUserTopItems(token, type, this.periodSelectValue, this.sliderItemValue)
           this.topSongs = topSongsResponse.items
+          itemStore.saveSongs(this.topSongs)
         } else if (type === "artists") {
           const topArtistsResponse = await getUserTopItems(token, type, this.periodSelectValueArtists, this.sliderItemValueArtists)
           this.topArtists = topArtistsResponse.items
+          itemStore.saveArtists(this.topArtists)
         } else {
           const messages = messageStore()
           messages.addMessage("danger", "Error! Type not supported.")

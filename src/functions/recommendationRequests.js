@@ -11,7 +11,7 @@ export async function getRecommendations(accessToken, range, limit) {
     });
     if (!recommendationsResponse.ok) {
         if (recommendationsResponse.status === 400) {
-            throw new Error("The user has no Top Songs.")
+            throw new Error("The user hasn't got enough Top Songs.")
         } else {
             throw new Error("Error! Could not get recommendations.");
         }
