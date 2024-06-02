@@ -358,4 +358,8 @@ export default {
     width: 100%;
   }
 }
+
+input[type=range] {
+  accent-color: #1ED760;
+}
 </style>
