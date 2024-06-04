@@ -27,8 +27,9 @@ export const userStore = defineStore("user", {
         },
 
         getProfilePicture() {
-            if (this.currentUser && this.currentUser.images.url) {
-                return this.currentUser.images.url
+            console.log(this.currentUser.images[0] !== undefined)
+            if (this.currentUser && this.currentUser.images[0] !== undefined) {
+                return this.currentUser.images[1].url
             }
             return "/default_pfp.jpg"
         },

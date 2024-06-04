@@ -31,12 +31,14 @@ export default defineComponent({
   async mounted() {
     document.title = "MusicAPP"
     await this.fetchUserPlaylists()
+    const store = userStore()
+    this.profile = store.getProfilePicture()
+    console.log(this.profile)
   },
 
   data() {
-    const store = userStore()
     return {
-      profile: store.getProfilePicture(),
+      profile: "",
       userPlaylists: [],
     }
   },
