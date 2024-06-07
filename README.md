@@ -1,35 +1,37 @@
-# New_MusicAPP
+# MusicAPP
+Repositorio con el proyecto final de DAW
 
-This template should help get you started developing with Vue 3 in Vite.
+## Video
+Video de demostración del proyecto: <br>
+[https://www.youtube.com/playlist?list=PLLTQTVvtEGriG2yyHEe6RhotmGkFJwyuA](https://youtu.be/7PBgZuXcgHs?feature=shared)
 
-## Recommended IDE Setup
+## Descripción
+MusicAPP es una aplicación web responsive que permite a sus usuarios interactuar con la API de Spotify. <br>
+Incluye funciones como ver las canciones o artistas más escuchados del usuario, recibir recomendaciones, escuchar las canciones, ver análisis de canciones, ver el perfil, etc.
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+## Tecnologías Asociadas
+- **Framework**: Vue.js, incluyendo librerías como Pinia, vue router, vee validate, yup y otras para determinadas funcionalidades.
+- **Lenguaje**: JavaScript.
+- **API**: API de Spotify, encargada de las callbacks, todas las peticiones de la aplicación, login y gestión de usuarios.
+- **Otros**: Spotify web player SDK, para poder escuchar las canciones en la aplicación.
 
-## Customize configuration
+## Licencia
+La licencia seleccionada para el proyecto es la MIT, en el apartado "license" puedes encontrar más información.
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+## Utilizar en el proyecto
+Si quieres utilizar el proyecto sigue estos pasos:
 
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+1. Clonar el repositorio:
+    ```
+    git clone https://github.com/Bolsa-de-Treball/front-end.git
+    ```
+2. Instalar dependencias:
+    ```
+    cd <carpeta-raíz>
+    npm install
+    ```
+3. Iniciar el servidor de desarrollo:
+    ```
+    npm run dev
+    ```
+    La aplicación estará accesible a través de `http://localhost:5173`.
