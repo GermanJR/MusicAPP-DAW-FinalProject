@@ -23,7 +23,7 @@ Si quieres utilizar el proyecto sigue estos pasos:
 
 1. Clonar el repositorio:
     ```
-    git clone https://github.com/Bolsa-de-Treball/front-end.git
+    git clone https://github.com/GermanJR/MusicAPP-DAW-FinalProject.git
     ```
 2. Instalar dependencias:
     ```
