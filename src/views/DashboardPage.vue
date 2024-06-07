@@ -224,5 +224,7 @@ b {
   color: #f2f2f2;
 }
 
-
+input[type=range] {
+  accent-color: #1ED760;
+}
 </style>
